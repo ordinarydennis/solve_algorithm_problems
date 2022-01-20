@@ -1,66 +1,47 @@
 class Solution {
+
+	map<char, string> m = {
+	{'2', "abc"},
+	{'3', "def"},
+	{'4', "ghi"},
+	{'5', "jkl"},
+	{'6', "mno"},
+	{'7', "pqrs"},
+	{'8', "tuv"},
+	{'9', "wxyz"}
+	};
+
+
+	void dfp(const string& digits, int count, string& rStr, vector<string>& strList)
+	{
+		if (digits.size() == count)
+		{
+			strList.push_back(rStr);
+			return;
+		}
+
+		const auto& c = digits[count];
+
+		for (const auto c : m[c])
+		{
+			rStr += c;
+			dfp(digits, count + 1, rStr, strList);
+			rStr.erase(rStr.size() - 1, 1);
+		}
+	}
+
 public:
-    vector<string> letterCombinations(string digits) {
+	vector<string> letterCombinations(string digits) {
 
-		map<char, int> m = {
-			{'2', "abc"},
-			{'3', "edf"},
-			{'4', "ghi"},
-			{'5', "jkl"},
-			{'6', "mno"},
-			{'7', "pqrs"},
-			{'8', "tuv"},
-			{'9', "wxyz"}
-		};
-	
-		map<string, int> sMap;
-
-		for(const auto c : digits)
+		vector<string> retList;
+		if (digits.empty())
 		{
-			auto it = m.find(c);
-			if(it == m.end())
-			{
-				continue;
-			}
-
-			sMap.emplace(it->second, 0);
+			return retList;
 		}
 
+		string str;
+		dfp(digits, 0, str, retList);
 
-		vector<string> ret;
-
-		int mapS = sMap.size();
-
-		while(1)
-		{
-			int loopIndex = 0;
-
-			string loopStr;
-
-			for(auto& [str, index]: sMap)
-			{
-				loopIndex++;
-
-				loopStr.push_back(str[index]);
-
-				if(mapS == loopIndex)
-				{
-					index++;
-
-					if(index == str.size())
-					{
-						index = 0;
-						mapS--;
-					}
-				}
-
-				
-	
-			}
-
-			ret.push_back(loopStr);
-		}
-
-		return ret;
-    }
+		return retList;
+	}
 };
