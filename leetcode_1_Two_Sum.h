@@ -1,3 +1,6 @@
+
+
+//Brute force
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -29,4 +32,58 @@ public:
         return std::move(ret);
         
     }
+};
+
+//Two-pass Hash Table
+class Solution {
+public:
+	vector<int> twoSum(vector<int>& nums, int target) {
+
+		unordered_map<int, int> map;
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			map.emplace(nums[i], i);
+		}
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			int remain = target - nums[i];
+			auto it = map.find(remain);
+			if (it != map.end())
+			{
+				if (it->second != i)
+				{
+					return vector<int>{it->second, i};
+				}
+			}
+		}
+
+		return vector<int>();
+
+	}
+};
+
+//One-pass Hash Table
+class Solution {
+public:
+	vector<int> twoSum(vector<int>& nums, int target) {
+
+		unordered_map<int, int> map;
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			int remain = target - nums[i];
+			auto it = map.find(remain);
+			if (it != map.end() && it->second != i)
+			{
+				return vector<int>{it->second, i};
+			}
+
+			map.emplace(nums[i], i);
+		}
+
+		return vector<int>();
+
+	}
 };

@@ -1,12 +1,12 @@
-13:30 ~ 14:20
-
 class Solution {
 public:
 	vector<vector<int>> fourSum(vector<int>& nums, int target) {
 
 		vector<int> iList;
 
-		dfs(nums, -1, target, iList);
+		sort(nums.begin(), nums.end());
+
+		dfs(nums, 0, target, iList);
 
 		return ret;
 	}
@@ -21,21 +21,20 @@ private:
 
 			if (accum == target)
 			{
-				ret.push_back(iList);
+				auto it = std::find(ret.begin(), ret.end(), iList);
+				if (it == ret.end())
+				{
+					ret.push_back(iList);
+				}
 			}
-
 			return;
 		}
 
-		//4 - (nums.size() - count);
-
-		int last = (count + (nums.size() - count)) - 4;
-
-		for (int n = count; n < last; n++)
+		for (int n = count; n < nums.size(); n++)
 		{
 			iList.push_back(nums[n]);
-			dfs(nums, n, target, iList);
-			iList.erase(iList.size() - 1, 1);
+			dfs(nums, n + 1, target, iList);
+			iList.erase(iList.end() - 1);
 		}
 
 	}
