@@ -2,55 +2,56 @@ class Solution {
 public:
 	vector<vector<int>> threeSum(vector<int>& nums) {
 
-		sort(nums.begin(), nums.end());
-
-		int numSize = nums.size();
-
 		vector<vector<int>> ret;
 
-		for (int i = 0; i < numSize; i++)
+		sort(nums.begin(), nums.end());
+
+		for (int i = 0; i < nums.size(); i++)
 		{
-			int l = 0;
-			int r = numSize - 1;
+			int pivot = nums[i];
+			int l = i + 1;
+			int r = nums.size() - 1;
+			int target = pivot * -1;
 
 			while (l < r)
 			{
-				if (i == l)
-				{
-					l++;
-					continue;
-				}
-
-				if (i == r)
-				{
-					r--;
-					continue;
-				}
-
 				int sum = nums[l] + nums[r];
 
-				if (sum + nums[i] == 0)
+				if (sum == target)
 				{
-					vector<int> v = { nums[i], nums[l], nums[r] };
-					sort(v.begin(), v.end());
-					auto it = find(ret.begin(), ret.end(), v);
-					if (it == ret.end())
+					ret.push_back(vector<int>{target, nums[l] , nums[r]});
+					l++;
+					r--;
+
+					while (l < r)
 					{
-						ret.push_back(v);
-						break;
+						if (nums[l] == nums[l - 1]) l++;
+						if (nums[r] == nums[r - 1]) r--;
 					}
 				}
-
-				if ((-1 * nums[i]) < sum)
+				else if (target < sum)
 				{
 					r--;
 				}
 				else
 				{
-					l++;
+					l--;
 				}
+
+
+
 			}
+
+
+
+
 		}
+
+
+
+
+
+
 
 		return ret;
 
