@@ -1,11 +1,3 @@
-[-1, 2, 1, -4]
-1
-e 2 
-o -3
-
--4 -1 1 2 
-// -3 = -3 + 1
-//
 class Solution {
 public:
 	int threeSumClosest(vector<int>& nums, int target) {
@@ -27,7 +19,7 @@ public:
 			{
 				int sum = nums[i] + nums[l] + nums[r];
 
-				int result = sum - target;
+				int result = target - sum;
 
 				if (result < 0)
 				{
@@ -40,10 +32,7 @@ public:
 					ret = sum;
 				}
 
-				while (l + 1 < size && nums[l] == nums[l + 1]) l++;
-				while (0 < r && nums[r] == nums[r - 1]) r--;
-
-				if (0 < result)
+				if (target < sum)
 				{
 					r--;
 				}
@@ -58,3 +47,4 @@ public:
 
 	}
 };
+
