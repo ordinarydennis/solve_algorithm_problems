@@ -14,7 +14,6 @@ public:
 
         };
 
-        int i = 0;
         for (const auto c : s)
         {
             if (c == '(' || c == '{' || c == '[')
@@ -23,16 +22,25 @@ public:
             }
             else
             {
-                if (m[c] != m[ov[ov.size() - 1]])
+                int last = ov.size() - 1;
+
+                if (0 > last)
                 {
                     return false;
                 }
 
-                ov.erase(s.begin() + i);
+                if (m[c] == m[ov[last]])
+                {
+                    ov.erase(ov.begin() + last);
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
-        return true;
+        return ov.empty();
 
     }
 };
