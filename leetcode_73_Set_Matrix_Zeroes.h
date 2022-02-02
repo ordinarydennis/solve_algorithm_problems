@@ -3,37 +3,52 @@ public:
     void setZeroes(vector<vector<int>>& matrix) {
 
         int ySize = matrix.size();
+        int xSize = matrix[0].size();
 
-        int xSize = 0;
-        if (0 < ySize)
+        bool fRow = false;
+        bool fCol = false;
+
+        for (int y = 0; y < ySize; y++)
         {
-            xSize = matrix[0].size();
-        }
-
-        vector<pair<int, int>> pList;
-
-        for (int a = 0; a < ySize; a++)
-        {
-            for (int b = 0; b < xSize; b++)
+            for (int x = 0; x < xSize; x++)
             {
-                if (0 == matrix[a][b])
+                if (0 == matrix[y][x])
                 {
-                    pList.push_back({ a,b });
+                    if (0 == y) fRow = true;
+                    if (0 == x) fCol = true;
+
+                    matrix[y][0] = 0;
+                    matrix[0][x] = 0;
                 }
             }
         }
 
+        for (int y = 1; y < ySize; y++)
+        {
+            for (int x = 1; x < xSize; x++)
+            {
+                if (0 == matrix[0][x] || 0 == matrix[y][0])
+                {
+                    matrix[y][x] = 0;
+                }
+            }
+        }
 
-        for (auto& p : pList)
+        if (fCol)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                matrix[y][0] = 0;
+            }
+        }
+
+        if (fRow)
         {
             for (int x = 0; x < xSize; x++)
             {
-                matrix[p.first][x] = 0;
-            }
-            for (int y = 0; y < ySize; y++)
-            {
-                matrix[y][p.second] = 0;
+                matrix[0][x] = 0;
             }
         }
+
     }
 };
