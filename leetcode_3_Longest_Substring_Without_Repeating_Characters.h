@@ -1,47 +1,40 @@
-
-//마지막 저장
-//맵으로 저장
-//이미 있는 문자가 나오면 사이즈 저장하고 클리어 
-//비었으면 추가 
-"dvdf"
-"ckilbkd"
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
 
-    std::map<char, int> m;
-    char lastc = '0';
-    int maxSize = 0;
-    for(const auto& c : s)
-    {
-        auto mIt = m.find(c);
-        if(m.end() != mIt)
-        {
-			if (maxSize < m.size())
-			{
-				maxSize = m.size();
-			}
-			m.clear();
-			m.emplace(c, 1);
+        map<char, int> m;
 
-			lastc = c;
-            continue;
+        int ret = 0;
+
+        int size = s.size();
+
+        for (int i = 0; i < size; i++)
+        {
+            char c = s[i];
+
+            const auto& it = m.find(c);
+            if (m.end() == it)
+            {
+                m.emplace(c, i);
+            }
+            else
+            {
+                if (ret < m.size())
+                {
+                    ret = m.size();
+                }
+
+                i = it->second;
+                m.clear();
+            }
         }
 
-        m.emplace(c, 1);
-		lastc = c;
+        if (ret < m.size())
+        {
+            ret = m.size();
+        }
 
-    }
-
-
-    if(maxSize == 0 || maxSize < m.size())
-    {
-       maxSize = m.size();
-    }
-
-    return maxSize;
+        return ret;
 
     }
 };
-
-
