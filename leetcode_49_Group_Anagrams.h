@@ -2,37 +2,24 @@ class Solution {
 public:
 	vector<vector<string>> groupAnagrams(vector<string>& strs) {
 
+		unordered_map<string, vector<string>> m;
+
+		for (auto& str : strs)
+		{
+			string str2 = str;
+			sort(str2.begin(), str2.end());
+
+			m[str2].push_back(std::move(str));
+		}
+
 		vector<vector<string>> ret;
 
-		for (auto a = strs.begin(); a != strs.end();)
+		for (auto& [_, sl] : m)
 		{
-			vector<string> ana;
-
-			for (auto b = a + 1; b != strs.end();)
-			{
-				string aStr = *a;
-				string bStr = *b;
-
-				sort(aStr.begin(), aStr.end());
-				sort(bStr.begin(), bStr.end());
-
-				if (aStr == bStr)
-				{
-					ana.push_back(*b);
-					b = strs.erase(b);
-				}
-				else
-				{
-					++b;
-				}	
-			}
-
-			ana.push_back(*a);
-			ret.push_back(ana);
-			a = strs.erase(a);
-			
+			ret.push_back(std::move(sl));
 		}
 
 		return ret;
+
 	}
 };
