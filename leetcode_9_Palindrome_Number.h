@@ -1,43 +1,43 @@
+
+//Brute force, Time Limit Exceeded
 class Solution {
 public:
-	bool isPalindrome(int x) {
+    string longestPalindrome(string s) {
 
-		if (x < 0)
-		{
-			return false;
-		}
+        int maxSize = 0;
+        int beginIndex = 0;
+        int endIndex = 0;
 
-		if (0 <= x && x < 10)
-		{
-			return true;
-		}
+        for (int a = 0; a < s.size(); a++)
+        {
+            for (int b = a; b < s.size(); b++)
+            {
+                int isCorrect = true;
+                int end = (b - a + 1) / 2;
+                for (int c = 0; c < end; c++)
+                {
+                    int left = a + c;
+                    int right = b - c;
 
-		vector<char> v;
+                    if (s[left] != s[right])
+                    {
+                        isCorrect = false;
+                        break;
+                    }
+                }
 
-		while (1)
-		{
-			v.push_back(static_cast<char>(x % 10));
-			x /= 10;
+                if (isCorrect)
+                {
+                    if (maxSize < b - a + 1)
+                    {
+                        maxSize = b - a + 1;
+                        beginIndex = a;
+                        endIndex = b;
+                    }
+                }
+            }
+        }
 
-			if (x < 10)
-			{
-				v.push_back(static_cast<char>(x));
-				break;
-			}
-		}
-
-		int size = v.size();
-		int half = static_cast<int>(size / 2);
-
-		for (int l = 0, r = size - 1; l < half; l++, r--)
-		{
-			if (v[l] != v[r])
-			{
-				return false;
-			}
-		}
-
-		return true;
-
-	}
+        return std::move(string(s, beginIndex, endIndex - beginIndex + 1));
+    }
 };
