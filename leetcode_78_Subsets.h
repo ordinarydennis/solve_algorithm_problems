@@ -4,11 +4,7 @@ class Solution {
 
 	void dfs(vector<int>& nums, vector<int>& nList, int index)
 	{
-		if (nums.size() - 1 < index)
-		{
-			ret.push_back(nList);
-			return;
-		}
+		ret.push_back(nList);
 
 		for (int i = index; i < nums.size(); i++)
 		{
@@ -23,13 +19,6 @@ public:
 	vector<vector<int>> subsets(vector<int>& nums) {
 
 		vector<int> nList;
-
-		ret.push_back({});
-
-		for (auto n : nums)
-		{
-			ret.push_back({ n });
-		}
 
 		dfs(nums, nList, 0);
 
