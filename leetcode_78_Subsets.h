@@ -2,26 +2,27 @@ class Solution {
 
 	vector<vector<int>> ret;
 
-	void dfs(vector<int>& nums, vector<int>& nList, int index)
+
+	void dfs(vector<int>& nums, vector<int>& list, int index)
 	{
-		ret.push_back(nList);
+		ret.push_back(list);
 
 		for (int i = index; i < nums.size(); i++)
 		{
-			nList.push_back(nums[i]);
-			dfs(nums, nList, i + 1);
-			nList.pop_back();
+			list.push_back(nums[i]);
+			dfs(nums, list, i + 1);
+			list.pop_back();
 		}
 	}
-
 
 public:
 	vector<vector<int>> subsets(vector<int>& nums) {
 
-		vector<int> nList;
+		vector<int> list;
 
-		dfs(nums, nList, 0);
+		dfs(nums, list, 0);
 
 		return ret;
+
 	}
 };
