@@ -1,31 +1,64 @@
+//class Solution {
+//
+//	void swap(int& a, int& b)
+//	{
+//		int temp = a;
+//		a = b;
+//		b = temp;
+//	}
+//
+//public:
+//	void sortColors(vector<int>& nums) {
+//
+//		int l = 0;
+//		int m = 0;
+//		int r = nums.size() - 1;
+//
+//		while (m <= r)
+//		{
+//			if (0 == nums[m])
+//			{
+//				swap(nums[l], nums[m]);
+//				l++;
+//				m++;
+//			}
+//			else if (1 == nums[m])
+//			{
+//				m++;
+//			}
+//			else if (2 == nums[m])
+//			{
+//				swap(nums[m], nums[r]);
+//				r--;
+//			}
+//		}
+//	}
+//};
+
 class Solution {
+
 public:
 	void sortColors(vector<int>& nums) {
 
-		for (int a = 1; a < nums.size(); a++)
+		int r = 0, w = 0, b = 0; // label the end of different colors;
+
+		for (int num : nums)
 		{
-			int cur = nums[a];
-
-			int b = a - 1;
-
-			for (; 0 <= b; b--)
-			{
-				if (cur < nums[b])
-				{
-					nums[b + 1] = nums[b];
-				}
-				else
-				{
-					nums[b + 1] = cur;
-					break;
-				}
+			if (num == 0) 
+			{ 
+				nums[b++] = 2;
+				nums[w++] = 1; 
+				nums[r++] = 0; 
 			}
-
-			if (b < 0)
-			{
-				nums[0] = cur;
+			else if (num == 1) 
+			{ 
+				nums[b++] = 2; 
+				nums[w++] = 1; 
 			}
-
+			else if (num == 2)
+			{
+				b++;
+			}
 		}
 	}
 };
