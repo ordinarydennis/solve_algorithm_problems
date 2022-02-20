@@ -4,42 +4,29 @@ public:
 
 		vector<vector<int>> ret;
 
-		vector<int> iterval = intervals[0];
+		sort(intervals.begin(), intervals.end(), [](vector<int>& list1, vector<int>& list2) {
+			return list1[0] < list2[0];
+			});
 
+
+		vector<int> v = intervals[0];
 		for (int i = 1; i < intervals.size(); i++)
 		{
-			bool b = false;
-
-			if (iterval[0] <= intervals[i][0] && intervals[i][1] <= iterval[1])
+			if (intervals[i][0] <= v[1])
 			{
-				continue;
-			}
-			else if (iterval[0] <= intervals[i][0] && intervals[i][0] <= iterval[1])
-			{
-				if (iterval[1] <= intervals[i][1])
+				if (v[1] <= intervals[i][1])
 				{
-					iterval[1] = intervals[i][1];
+					v[1] = intervals[i][1];
 				}
-
-				continue;
 			}
-			else if (intervals[i][0] <= iterval[0] && iterval[0] <= intervals[i][1])
+			else
 			{
-				iterval[0] = intervals[i][0];
-
-				if (iterval[1] <= intervals[i][1])
-				{
-					iterval[1] = intervals[i][1];
-				}
-
-				continue;
+				ret.push_back(std::move(v));
+				v = intervals[i];
 			}
-
-			ret.push_back(iterval);
-			iterval = intervals[i];
 		}
 
-		ret.push_back(iterval);
+		ret.push_back(std::move(v));
 
 		return ret;
 	}
