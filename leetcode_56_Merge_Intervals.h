@@ -4,12 +4,13 @@ public:
 
 		vector<vector<int>> ret;
 
-		sort(intervals.begin(), intervals.end(), [](vector<int>& list1, vector<int>& list2) {
+		sort(intervals.begin(), intervals.end(), [](const vector<int>& list1, const vector<int>& list2) {
 			return list1[0] < list2[0];
 			});
 
 
-		vector<int> v = intervals[0];
+		vector<int> v = std::move(intervals[0]);
+
 		for (int i = 1; i < intervals.size(); i++)
 		{
 			if (intervals[i][0] <= v[1])
@@ -22,7 +23,7 @@ public:
 			else
 			{
 				ret.push_back(std::move(v));
-				v = intervals[i];
+				v = std::move(intervals[i]);
 			}
 		}
 
