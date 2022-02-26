@@ -1,58 +1,30 @@
-
-//nums = [2,3,1,1,4]
+//[2,3,1,1,4] 일 때, m 의 변화 --> 0 2 4 4 4
 class Solution {
+public:
+	bool canJump(vector<int>& nums) {
 
-	bool ret = false;
-	vector<bool> indexList;
-
-	bool dfs(const vector<int>& nums, int curIndex)
-	{
-		if (true == ret)
+		if (nums.size() == 1)
 		{
 			return true;
 		}
 
-		if (false == indexList[curIndex])
-		{
-			return false;
-		}
+		int m = 0;
 
-		if (nums.size() - 1 == curIndex)
+		for (int i = 0; i < nums.size(); i++)
 		{
-			ret = true;
-			return true;
-		}
-
-		if (nums.size() <= curIndex)
-		{
-			return false;
-		}
-
-		if (0 == nums[curIndex])
-		{
-			return false;
-		}
-
-		for (int i = 1; i <= nums[curIndex]; i++)
-		{
-			if (false == dfs(nums, curIndex + i))
+			if (m < i)
 			{
-				indexList[curIndex + i] = false;
+				return false;
+			}
+
+			m = max(m, i + nums[i]);
+
+			if (nums.size() - 1 <= m)
+			{
+				return true;
 			}
 		}
 
 		return false;
-	}
-
-
-public:
-	bool canJump(vector<int>& nums) {
-
-		indexList.reserve(nums.size());
-		indexList.assign(nums.size(), true);
-
-		dfs(nums, 0);
-
-		return ret;
 	}
 };
