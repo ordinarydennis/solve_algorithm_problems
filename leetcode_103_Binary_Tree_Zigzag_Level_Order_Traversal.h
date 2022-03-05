@@ -1,65 +1,58 @@
 class Solution {
 
-	unordered_map<int, vector<int>> map;
-
-	void dfs(TreeNode* root, int level)
-	{
-
-		if (level % 2 == 1)
-		{
-			if (nullptr != root->right)
-			{
-				map[level].push_back(root->right->val);
-			}
-
-			if (nullptr != root->left)
-			{
-				map[level].push_back(root->left->val);
-			}
-		}
-		else
-		{
-			if (nullptr != root->left)
-			{
-				map[level].push_back(root->left->val);
-			}
-
-			if (nullptr != root->right)
-			{
-				map[level].push_back(root->right->val);
-			}
-		}
-
-		if (nullptr != root->left)
-		{
-			dfs(root->left, level + 1);
-		}
-
-		if (nullptr != root->right)
-		{
-			dfs(root->right, level + 1);
-		}
-	}
-
 public:
-	vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 
+        if (nullptr == root)
+        {
+            return vector<vector<int>>();
+        }
 
-		if (nullptr != root)
-		{
-			map[0].push_back(root->val);
+        queue<TreeNode*> q;
 
-			dfs(root, 1);
-		}
+        q.push(root);
 
-		vector<vector<int>> ret;
+        vector<vector<int>> ret;
 
-		for (int i = 0; i < map.size(); i++)
-		{
-			ret.emplace_back(std::move(map[i]));
-		}
+        bool isLeft = true;
+        while (!q.empty())
+        {
+            vector<int> v(q.size());
 
-		return ret;
-	}
+            int size = q.size();
+
+            for (int i = 0; i < size; i++)
+            {
+                auto* n = q.front();
+
+                q.pop();
+
+                if (isLeft)
+                {
+                    v[i] = n->val;
+                }
+                else
+                {
+                    v[size - i - 1] = n->val;
+                }
+
+                if (n->left)
+                {
+                    q.push(n->left);
+                }
+
+                if (n->right)
+                {
+                    q.push(n->right);
+                }
+            }
+
+            ret.push_back(std::move(v));
+
+            isLeft = !isLeft;
+        }
+
+        return ret;
+    }
 
 };
