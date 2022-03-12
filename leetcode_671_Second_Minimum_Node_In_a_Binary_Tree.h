@@ -11,29 +11,34 @@
  */
 class Solution {
 
+    int min = 0;
+    long ret = LONG_MAX;
+
+    void dfs(TreeNode* root)
+    {
+        if (nullptr == root)
+        {
+            return;
+        }
+
+        if (min < root->val && root->val < ret)
+        {
+            ret = root->val;
+        }
+        else if (min == root->val)
+        {
+            dfs(root->left);
+            dfs(root->right);
+        }
+    }
+
 public:
     int findSecondMinimumValue(TreeNode* root) {
 
-        int left = -1;
-        if (root->left)
-        {
-            left = root->left->val;
-        }
+        min = root->val;
 
-        int right = -1;
-        if (root->right)
-        {
-            right = root->right->val;
-        }
+        dfs(root);
 
-
-        if (left != right)
-        {
-            return std::max(left, right);
-        }
-        else
-        {
-            return -1;
-        }
+        return ret != LONG_MAX ? (int)ret : -1;
     }
 };
