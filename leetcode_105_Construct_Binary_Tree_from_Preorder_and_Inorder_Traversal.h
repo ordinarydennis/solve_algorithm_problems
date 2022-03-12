@@ -10,14 +10,40 @@
  * };
  */
 class Solution {
+
+    std::unordered_map<int, int> inorderIndexMap;
+
+    int rootIndex = 0;
+
+    TreeNode* buildSubTree(vector<int>& preorder, vector<int>& inorder, int left, int right)
+    {
+        if (right < left)
+        {
+            return nullptr;
+        }
+
+        int inoderRootValue = preorder[rootIndex++];
+
+        TreeNode* newNode = new TreeNode(inoderRootValue);
+
+        int inoderRootIndex = inorderIndexMap[inoderRootValue];
+
+        newNode->left = buildSubTree(preorder, inorder, left, inoderRootIndex - 1);
+        newNode->right = buildSubTree(preorder, inorder, inoderRootIndex + 1, right);
+
+        return newNode;
+
+    }
+
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        
-        //프리 오더의 첫 인자는 루트 노드다.
-        //루트 노드를 인오더에서 찾는다.
-        //루트 노드와 인오더의 루트 앞에 노드와 같다면 자식이다. 
 
+        for (int i = 0; i < inorder.size(); i++)
+        {
+            inorderIndexMap.emplace(inorder[i], i);
+        }
 
+        return buildSubTree(preorder, inorder, 0, preorder.size() - 1);
 
     }
 };
