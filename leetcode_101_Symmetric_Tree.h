@@ -10,53 +10,40 @@
  * };
  */
 class Solution {
-
-    map<int, TreeNode*> m;
-    int index = 0;
-
-    void traversal(TreeNode* root)
-    {
-        if (nullptr == root)
-        {
-            return;
-        }
-
-        traversal(root->left);
-
-        m[index++] = root;
-
-        traversal(root->right);
-
-        if (nullptr == root->right && nullptr == root->left)
-        {
-            m[index++] = nullptr;
-        }
-    }
-
-
 public:
     bool isSymmetric(TreeNode* root) {
+        TreeNode* left, * right;
+        if (!root)
+            return true;
 
-        traversal(root);
+        queue<TreeNode*> q1, q2;
 
-        int size = m.size();
-        int end = size / 2;
+        q1.push(root->left);
+        q2.push(root->right);
 
-        for (int i = 0; i < end; i++)
+        while (!q1.empty() && !q2.empty())
         {
-            auto* left = m[i];
-            auto* right = m[size - i - 1];
-            if (left && right)
-            {
-                if (left->val != right->val)
-                {
-                    return false;
-                }
+            left = q1.front();
+            q1.pop();
+            right = q2.front();
+            q2.pop();
 
-            }
+            if (NULL == left && NULL == right)
+                continue;
+
+            if (NULL == left || NULL == right)
+                return false;
+
+            if (left->val != right->val)
+                return false;
+
+            q1.push(left->left);
+            q1.push(left->right);
+
+            q2.push(right->right);
+            q2.push(right->left);
         }
 
         return true;
-
     }
 };
