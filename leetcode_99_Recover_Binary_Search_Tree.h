@@ -10,72 +10,52 @@
  * };
  */
 class Solution {
+private:
 
-    TreeNode* root = nullptr;
-
-    void dfs(TreeNode* preNode, TreeNode* currentNode, bool isLeft)
+    void markTree(TreeNode* root, TreeNode*& prev, TreeNode*& first, TreeNode*& end)
     {
-
-        if (isLeft)
+        if (!root) 
+            return;
+        
+        markTree(root->left, prev, first, end);
+        
+        if (prev)
         {
-            if (root->val < currentNode->val)
+            if (root->val < prev->val)
             {
-                TreeNode temp = *root;
-
-				root->left = currentNode->left;
-				root->right = currentNode->right;
-
-                currentNode->left = temp.left;
-                currentNode->right = temp.right;
-
-                preNode->left = root;
-
-                return;
+                if (!first)
+                {
+                    first = prev;
+                }
+                end = root;
             }
         }
-        else
-        {
-			if (currentNode->val < root->val)
-			{
-				TreeNode temp = *root;
-
-				root->left = currentNode->left;
-				root->right = currentNode->right;
-
-				currentNode->left = temp.left;
-				currentNode->right = temp.right;
-
-				preNode->right = root;
-                return;
-			}
-        }
-
-		if (currentNode && currentNode->left)
-		{
-			dfs(currentNode, currentNode->left, isLeft);
-		}
-
-		if (currentNode && currentNode->right)
-		{
-			dfs(currentNode, currentNode->right, isLeft);
-		}
+        
+        prev = root;
+       
+        markTree(root->right, prev, first, end);
     }
 
 
 public:
-    void recoverTree(TreeNode* root) {
-
-        this->root = root;
-
-        if (root && root->left)
-        {
-            dfs(root, root->left, true);
-        }
-
-        if (root && root->right)
-        {
-            dfs(root, root->right, false);
-        }
-        
+    void recoverTree(TreeNode* root)
+    {
+        TreeNode* prev = nullptr, * first = nullptr, * end = nullptr;
+        markTree(root, prev, first, end);
+        swap(first->val, end->val);
+        return;
     }
 };
+
+/*
+
+You are given the root of a binary search tree (BST), 
+where the values of exactly two nodes of the tree were swapped by mistake. 
+Recover the tree without changing its structure.
+
+
+The question says that exactly two nodes in the tree were swapped by mistake, 
+so you have to find two nodes whose values are reversed.
+
+
+*/
