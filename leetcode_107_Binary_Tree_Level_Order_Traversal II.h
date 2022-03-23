@@ -73,7 +73,7 @@ public:
         }
 
         if(root)
-            ret.emplace_back(vector<int>{root->val});
+            ret.emplace_back(std::move(vector<int>{root->val}));
 
         return ret;
     }
