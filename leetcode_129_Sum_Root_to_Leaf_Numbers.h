@@ -18,11 +18,11 @@ class Solution {
     {
         int cur = (num * 10) + root->val;
 
-        if (nullptr == root->left && nullptr root->right)
+        if (nullptr == root->left && nullptr == root->right)
         {
             sum += cur;
+            return;
         }
-
 
         if (root->left)
         {
