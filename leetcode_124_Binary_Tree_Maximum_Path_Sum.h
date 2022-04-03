@@ -11,56 +11,27 @@
  */
 class Solution {
 
-    int max = -1000;
+    int max = INT_MIN;
 
-    void dfs(TreeNode* root, int num)
+    int dfs(TreeNode* root)
     {
-		if (max < root->val)
-		{
-			max = root->val;
-		}
+        if (nullptr == root)
+            return 0;
 
-		int sum = sum + root->val + num;
+        int lmax = std::max(dfs(root->left), 0);
 
-		if (max < sum)
-		{
-			max = sum;
-		}
+        int rmax = std::max(dfs(root->right), 0);
 
-		if (root->left)
-		{
-            dfs(root->left, sum);
-			if (max < sum + root->left->val)
-			{
-				max = sum;
-			}
-		}
-		
-		if (root->right)
-		{
-            dfs(root->right, sum);
-			if (max < sum + root->right->val)
-			{
-				max = sum;
-			}
-		}
+        max = std::max(max, root->val + lmax + rmax);
 
-		if (root->left && root->right)
-		{
-			if (max < sum + root->left->val + root->right->val)
-			{
-				max = sum;
-			}
-		}
+        return root->val + std::max(lmax, rmax);
     }
-
 
 public:
     int maxPathSum(TreeNode* root) {
 
-        dfs(root, 0);
+        dfs(root);
 
         return max;
     }
 };
-//[-10,9,20,null,null,15,7]
