@@ -1,36 +1,27 @@
 class Solution {
-
-	int max = INT_MIN;
-	
-	void dfs(vector<int>& nums, int index)
+public:
+	int maxSubArray(vector<int>& nums)
 	{
-		if (nums.size() <= index)
+		int max = INT_MIN;
+
+		for (int i = 0; i < nums.size(); i++)
 		{
-			return;
-		}
+			int pre = 0;
 
-		dfs(nums, index + 1);
-
-		int sum = 0;
-
-		for(int i = index; i < nums.size(); i++)
-		{
-			sum += nums[i];
-
-			if (max < sum)
+			if (0 < i && 0 < nums[i - 1])
 			{
-				max = sum;
-				v[i] = max;
+				pre = nums[i - 1];
+			}
+
+			nums[i] = nums[i] + pre;
+
+			if(max < nums[i])
+			{
+				max = nums[i];
 			}
 		}
-	}
-
-
-public:
-	int maxSubArray(vector<int>& nums) {
-
-		dfs(nums, 0);
 
 		return max;
 	}
+
 };
