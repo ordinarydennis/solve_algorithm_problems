@@ -18,7 +18,11 @@ public:
 				{
 					const auto& preRow = ret[i - 1];
 
-					if (0 == a || i == a)
+					if (0 == a)
+					{
+						row.push_back(preRow[a]);
+					}
+					else if (i == a)
 					{
 						row.push_back(preRow[a - 1]);
 					}
