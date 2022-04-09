@@ -168,4 +168,49 @@ public:
     }
 };
 
+//
+class Solution {
+
+    vector<int> memo;
+
+    void jump(vector<int>& nums, int index)
+    {
+        if (nums.size() - 1 <= index)
+        {
+            return;
+        }
+
+        jump(nums, index + 1);
+
+        if (nums.size() - 1 <= index + nums[index])
+        {
+            memo[index] = 1;
+            return;
+        }
+
+        int minCount = INT_MAX - 1;
+
+        for (int i = 1; i <= nums[index]; i++)
+        {
+            minCount = std::min(minCount, memo[index + i] + 1);
+        }
+
+        memo[index] = minCount;
+    }
+
+public:
+    int jump(vector<int>& nums) {
+
+        if (nums.size() <= 1)
+        {
+            return 0;
+        }
+
+        memo.resize(nums.size(), INT_MAX - 1);
+
+        jump(nums, 0);
+
+        return memo[0];
+    }
+};
 
