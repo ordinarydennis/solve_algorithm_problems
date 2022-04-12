@@ -1,41 +1,18 @@
 class Solution {
 
-	int count = 0;
-
-	vector<int> v;
-
-	bool dfs(int n, int step)
-	{
-		if (n == step)
-		{
-			count++;
-			return true;
-		}
-
-		for (int i = 1; i <= 2; i++)
-		{
-			if (n < step + i)
-			{
-				continue;
-			}
-
-			if (dfs(n, step + i))
-			{
-				v[step + i]++;
-			}
-		}
-
-		return false;
-	}
-
 public:
-	int climbStairs(int n) {
+	int climbStairs(int n)
+	{
+		vector<int> steps(n, 0);
 
-		v.resize(n, 0);
+		steps[0] = 1;
+		steps[1] = 2;
 
-		dfs(n, 0);
-
-		return std::accumulate(v.begin(), v.end(), 0);
-
+		for (int i = 2; i < n; i++)
+		{
+			steps[i] = steps[i - 2] + steps[i - 1];
+		}
+		return steps[n - 1];
 	}
+
 };
