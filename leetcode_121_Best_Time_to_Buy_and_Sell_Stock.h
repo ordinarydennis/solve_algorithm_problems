@@ -3,36 +3,20 @@ class Solution {
 public:
 	int maxProfit(vector<int>& prices) {
 
-		int start = 0;
+		int min = prices[0];
 
-		int last = prices.size() - 1;
+		int max = 0;
 
-		int max = INT_MIN;
 
-		while (start <= last)
+		for (int i = 1; i < prices.size(); i++)
 		{
-			int b = prices[last] - prices[start];
-
-			if (max < b)
+			if (prices[i] < min)
 			{
-				max = b;
-			}
-		
-			if (b < 0)
-			{
-				start++;
+				min = prices[i];
 			}
 			else
 			{
-				if (prices[start + 1] < prices[start])
-				{
-					start++;
-				}
-				
-				if (prices[last] < prices[last - 1])
-				{
-					last--;
-				}
+				max = std::max(max, prices[i] - min);
 			}
 		}
 
