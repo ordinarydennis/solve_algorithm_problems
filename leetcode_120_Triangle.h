@@ -1,3 +1,5 @@
+
+//top down
 class Solution {
 
     vector<vector<int>> memo;
@@ -30,6 +32,30 @@ public:
         );
 
         return dp(triangle, 0, 0);
+
+    }
+};
+
+//bottom up
+class Solution {
+
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+
+        int max_row = triangle.size();
+
+        vector<int> memo(triangle.back());
+
+        for (int row = max_row - 2; 0 <= row; row--)
+        {
+            for (int i = 0; i <= row; i++)
+            {
+                memo[i] = triangle[row][i] + std::min(memo[i], memo[i + 1]);
+            }
+
+        }
+
+        return memo[0];
 
     }
 };
