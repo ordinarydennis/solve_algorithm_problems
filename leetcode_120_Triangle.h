@@ -1,38 +1,35 @@
 class Solution {
 
-	int ret = INT_MAX;
+    vector<vector<int>> memo;
 
-	void dfs(vector<vector<int>>& triangle, int depth, int pos, int sum)
-	{
-		if (triangle.size() - 1 <= depth)
-		{
-			ret = std::min(ret, sum + triangle[depth][pos]);
-			return;
-		}
+    int dp(vector<vector<int>>& triangle, int row, int index)
+    {
+        if (row == triangle.size() - 1)
+        {
+            return triangle[row][index];
+        }
 
-		for (int i = pos; i <= pos + 1; i++)
-		{
-			if (triangle[depth].size() <= i)
-			{
-				break;
-			}
+        if (INT_MIN != memo[row][index])
+        {
+            return memo[row][index];
+        }
 
-			if (ret < sum + triangle[depth][i])
-			{
-				continue;
-			}
+        memo[row][index] = triangle[row][index] + std::min(
+            dp(triangle, row + 1, index),
+            dp(triangle, row + 1, index + 1)
+        );
 
-			dfs(triangle, depth + 1, i, sum + triangle[depth][i]);
-		}
-	}
-
+        return memo[row][index];
+    }
 
 public:
-	int minimumTotal(vector<vector<int>>& triangle) {
+    int minimumTotal(vector<vector<int>>& triangle) {
 
-		dfs(triangle, 0, 0, 0);
+        memo.resize(triangle.size(),
+            vector<int>(triangle.size(), INT_MIN)
+        );
 
-		return ret;
+        return dp(triangle, 0, 0);
 
-	}
+    }
 };
