@@ -7,7 +7,6 @@ public:
 
 		int max = 0;
 
-
 		for (int i = 1; i < prices.size(); i++)
 		{
 			if (prices[i] < min)
@@ -16,7 +15,12 @@ public:
 			}
 			else
 			{
-				max = std::max(max, prices[i] - min);
+				if (min < prices[i])
+				{
+					max += prices[i] - min;
+					min = prices[i];
+				}
+				
 			}
 		}
 
