@@ -1,53 +1,43 @@
 class Solution {
-
-	bool isPalindrome(const string& s)
-	{
-		bool ret = true;
-
-		for (int i = 0; i < s.size() / 2; i++)
-		{
-			if (s[i] != s[s.size() - 1 - i])
-			{
-				return false;
-			}
-		}
-
-		return ret;
-	}
-
-
 public:
-	vector<vector<string>> partition(string s) {
+    vector<vector<string>> partition(string s)
+    {
+        vector<vector<string>> result;
+       
+        vector<string> currentList;
+        
+        dfs(result, s, 0, currentList);
+        
+        return result;
+    }
 
-		vector<vector<string>> ret;
+    void dfs(vector<vector<string>>& result, string& s, int start, vector<string>& currentList) 
+    {
+        if (start >= s.length()) 
+            result.push_back(currentList);
+        
+        for (int end = start; end < s.length(); end++)
+        {
+            if (isPalindrome(s, start, end))
+            {
+                // add current substring in the currentList
+                currentList.push_back(s.substr(start, end - start + 1));
 
-		vector<string> strList;
+                dfs(result, s, end + 1, currentList);
 
-		for (int a = 0; a < s.size() - 1; a++)
-		{
-			string str;
+                // backtrack and remove the current substring from currentList
+                currentList.pop_back();
+            }
+        }
+    }
 
-			str += s[a];
-
-			//strList.emplace_back(str);
-
-			for (int b = a + 1; b < s.size(); b++)
-			{
-				str += s[b];
-				if (true == isPalindrome(str))
-				{
-					strList.emplace_back(str);
-				}
-				else
-				{
-					break;
-				}
-			}
-
-			ret.emplace_back(std::move(strList));
-		}
-
-		return ret;
-
-	}
+    bool isPalindrome(string& s, int low, int high)
+    {
+        while (low < high)
+        {
+            if (s[low++] != s[high--]) 
+                return false;
+        }
+        return true;
+    }
 };
