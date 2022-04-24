@@ -1,45 +1,32 @@
 class Solution {
 public:
-	bool wordBreak(string s, vector<string>& wordDict) {
+    bool wordBreak(string s, vector<string>& wordDict)
+    {
+        int n = s.size();
 
-		vector<string> wordDict2;
+        set<string> dict;
+        for (auto w : wordDict)
+            dict.insert(w);
 
-		for (const auto& word : wordDict)
-		{
-			auto pos = s.find(word);
+        vector<bool> dp(n + 1, false);
+        dp[0] = true; 
 
-			if (std::string::npos == pos)
-			{
-				bool isFind = false;
+        for (int i = 1; i <= s.size(); i++)
+        {
+            for (int j = i - 1; j >= 0; j--)
+            {
+                if (dp[j])
+                {
+                    string word = s.substr(j, i - j);
+                    if (dict.find(word) != dict.end())
+                    {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
 
-				for (const auto& word2 : wordDict2)
-				{
-					if (std::string::npos != word2.find(word))
-					{
-						isFind = true;
-						break;
-					}
-				}
-
-				if (false == isFind)
-				{
-					return false;
-				}
-			}
-
-			auto str = s.substr(pos, word.size());
-
-			s.erase(pos, word.size());
-
-			if (0 == s.size())
-			{
-				return true;
-			}
-
-			wordDict2.push_back(str);
-		}
-
-
-		return true;
-	}
+        return dp[n];
+    }
 };
