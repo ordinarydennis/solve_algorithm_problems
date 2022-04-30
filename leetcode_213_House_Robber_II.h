@@ -1,39 +1,26 @@
 class Solution {
 public:
-	int rob(vector<int>& nums) {
+    int rob(vector<int>& nums)
+    {
+        int n = nums.size();
 
-		if (nums.size() <= 3)
-		{
-			return *max_element(nums.begin(), nums.end());
-		}
+        if (n < 2) return n ? nums[0] : 0;
 
-		vector<int> dp(nums.size(), 0);
+        return max(robber(nums, 0, n - 2), robber(nums, 1, n - 1));
+    }
+private:
+    int robber(vector<int>& nums, int l, int r)
+    {
+        int pre = 0, cur = 0;
 
-		dp[nums.size() - 1] = nums[nums.size() - 1];
-		dp[nums.size() - 2] = nums[nums.size() - 2];
+        for (int i = l; i <= r; i++)
+        {
+            int temp = max(pre + nums[i], cur);
 
-		for (int i = nums.size() - 3; 0 <= i; i--)
-		{
-			int max = 0;
+            pre = cur;
 
-			for (int a = i + 2; a < nums.size(); a++)
-			{
-				if (0 == i && a == nums.size() - 1)
-				{
-					continue;
-				}
-
-				if (max < nums[a])
-				{
-					max = nums[a];
-				}
-			}
-
-			dp[i] = max + nums[i];
-		}
-
-
-		return std::max(dp[0], dp[1]);
-
-	}
+            cur = temp;
+        }
+        return cur;
+    }
 };
