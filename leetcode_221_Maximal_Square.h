@@ -2,58 +2,31 @@ class Solution {
 public:
 	int maximalSquare(vector<vector<char>>& matrix) {
 
-		int max = 0;
-		int my = matrix.size();
-		int mx = matrix[0].size();
+		int rows = matrix.size();
+
+		int cols = rows > 0 ? matrix[0].size() : 0;
+
+		vector<vector<int>> dp(rows + 1, vector<int>(cols + 1, 0));
+
+		int maxsqlen = 0;
 		
-		for (int y = 0; y < my; y++)
+		for (int i = 1; i <= rows; i++)
 		{
-			for (int x = 0; x < mx; x++)
+			for (int j = 1; j <= cols; j++)
 			{
-				if (0 == matrix[y][x])
+				if (matrix[i - 1][j - 1] == '1')
 				{
-					continue;
-				}
-				
-				int count = 1;
+					int min1 = min(dp[i][j - 1], dp[i - 1][j]);
 
-				int yy = y;
-				int xx = y;
+					dp[i][j] = min(min1, dp[i - 1][j - 1]) + 1;
 
-				while (true)
-				{
-					if (my <= yy + 1 || mx <= xx + 1)
-					{
-						if (max < count)
-						{
-							max = count;
-						}
-						break;
-					}
-
-					if (matrix[yy + 1][xx] &&
-						matrix[yy][xx + 1] &&
-						matrix[yy + 1][xx + 1])
-					{
-						count++;
-					}
-					else
-					{
-						break;
-					}
-					yy++;
-					xx++;
-
-				}
-
-				if (max < count)
-				{
-					max = count;
+					maxsqlen = max(maxsqlen, dp[i][j]);
 				}
 			}
 		}
-
-		return max * 2;
+		return maxsqlen * maxsqlen;
 
 	}
 };
+	
+		
