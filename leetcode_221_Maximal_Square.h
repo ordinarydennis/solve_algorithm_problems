@@ -2,31 +2,38 @@ class Solution {
 public:
 	int maximalSquare(vector<vector<char>>& matrix) {
 
-		int rows = matrix.size();
+		int maxRow = matrix.size();
 
-		int cols = rows > 0 ? matrix[0].size() : 0;
+		int maxColumn = (maxRow) ? matrix[0].size() : 0;
 
-		vector<vector<int>> dp(rows + 1, vector<int>(cols + 1, 0));
+		vector<vector<int>> dp(
+			maxRow + 1,
+			vector<int>(maxColumn + 1, 0)
+		);
 
-		int maxsqlen = 0;
-		
-		for (int i = 1; i <= rows; i++)
+		int max = 0;
+
+		for (int row = 1; row <= maxRow; row++)
 		{
-			for (int j = 1; j <= cols; j++)
+			for (int column = 1; column <= maxColumn; column++)
 			{
-				if (matrix[i - 1][j - 1] == '1')
-				{
-					int min1 = min(dp[i][j - 1], dp[i - 1][j]);
+				if ('1' != matrix[row - 1][column - 1])
+					continue;
 
-					dp[i][j] = min(min1, dp[i - 1][j - 1]) + 1;
+				dp[row][column] = std::min(
+					std::min(
+						dp[row - 1][column],
+						dp[row][column - 1]
+					),
+					dp[row - 1][column - 1]
+				) + 1;
 
-					maxsqlen = max(maxsqlen, dp[i][j]);
-				}
+				max = std::max(max, dp[row][column]);
+
 			}
 		}
-		return maxsqlen * maxsqlen;
 
+		return max * max;
 	}
 };
-	
-		
+
