@@ -1,39 +1,37 @@
-class Solution {
+class Solution
+{
 public:
-	int maximalSquare(vector<vector<char>>& matrix) {
-
-		int maxRow = matrix.size();
-
-		int maxColumn = (maxRow) ? matrix[0].size() : 0;
-
-		vector<vector<int>> dp(
-			maxRow + 1,
-			vector<int>(maxColumn + 1, 0)
-		);
-
-		int max = 0;
-
-		for (int row = 1; row <= maxRow; row++)
+	int maximalSquare(vector<vector<char>>& matrix)
+	{
+		if (matrix.empty())
 		{
-			for (int column = 1; column <= maxColumn; column++)
-			{
-				if ('1' != matrix[row - 1][column - 1])
-					continue;
-
-				dp[row][column] = std::min(
-					std::min(
-						dp[row - 1][column],
-						dp[row][column - 1]
-					),
-					dp[row - 1][column - 1]
-				) + 1;
-
-				max = std::max(max, dp[row][column]);
-
-			}
+			return 0;
 		}
 
-		return max * max;
+		int m = matrix.size(), n = matrix[0].size(), sz = 0, pre;
+
+		vector<int> cur(n, 0);
+
+		for (int i = 0; i < m; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				int temp = cur[j];
+
+				if (!i || !j || matrix[i][j] == '0')
+				{
+					cur[j] = matrix[i][j] - '0';
+				}
+				else
+				{
+					cur[j] = min(pre, min(cur[j], cur[j - 1])) + 1;
+				}
+
+				sz = max(cur[j], sz);
+
+				pre = temp;
+			}
+		}
+		return sz * sz;
 	}
 };
-
