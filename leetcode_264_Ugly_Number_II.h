@@ -4,79 +4,48 @@ class Solution {
 public:
 	int nthUglyNumber(int n) {
 
-		int PRIME2 = 1;
-		int PRIME3 = 1;
-		int PRIME5 = 1;
+		vector<int> v(n, 1);
 
-		int prime2Count = 0;
-		int prime3Count = 0;
-		int prime5Count = 0;
-
-		int ret = 1;
+		int index2 = 0;
+		int index3 = 0;
+		int index5 = 0;
 
 		for (int i = 1; i < n; i++)
 		{
 
-			int num1 = 2 * PRIME2;
-			int num2 = 3 * PRIME3;
-			int num3 = 5 * PRIME5;
+			int num1 = v[index2] * 2;
+			int num2 = v[index3] * 3;
+			int num3 = v[index5] * 5;
 
-			int minNum = std::min(
-				std::min(num1, num2),
-				num3
+
+			int min = std::min(
+				num1,
+				std::min(
+					num2,
+					num3
+				)
 			);
 
-			if (num1 == minNum || 2 == minNum)
+
+			if (num1 == min)
 			{
-				PRIME2 = num1;
-				prime2Count++;
+				index2++;
 			}
 
-			if (num2 == minNum || 3 == minNum)
+			if (num2 == min)
 			{
-				PRIME3 = num2;
-				prime3Count++;
+				index3++;
 			}
 
-			if (num3 == minNum || 5 == minNum)
+			if (num3 == min)
 			{
-				PRIME5 = num3;
-				prime5Count++;
+				index5++;
 			}
 
-			ret = minNum;
+			v[i] = min;
+
 		}
 
-
-		return ret;
-
+		return v[n - 1];
 	}
 };
-
-class Solution {
-public:
-	int nthUglyNumber(int n) {
-		//for performance
-		static vector<int> answer = { 1 };
-		static int index2 = 0;
-		static int index3 = 0;
-		static int index5 = 0;
-
-		while (answer.size() < n) {
-			int mul2 = answer[index2] * 2;
-			int mul3 = answer[index3] * 3;
-			int mul5 = answer[index5] * 5;
-
-			int targetMin = min(mul2, min(mul3, mul5));
-
-			if (targetMin == mul2) index2++;
-			if (targetMin == mul3) index3++;
-			if (targetMin == mul5) index5++;
-
-			answer.push_back(targetMin);
-		}
-
-		return answer[n - 1];
-	}
-};
-
