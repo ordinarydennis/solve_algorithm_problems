@@ -1,58 +1,53 @@
 class Solution {
 
-	int max = 0;
+    int min = INT_MAX;
 
-	void dfs(int n, int count)
-	{
+    bool dfs(int n, int count, int remain)
+    {
+        if (remain < 0)
+        {
+            return false;
+        }
 
-		for (int i = 4; i >= 2; i--)
-		{
-			int a = n - (i * i);
+        if (min < count)
+        {
+            return true;
+        }
 
-			if (a == 1)
-			{
-				count += 2;
-				if (max < count)
-				{
-					max = count;
-				}
-				break;
-			}
+        if (0 == remain)
+        {
+            min = std::min(min, count);
+            return true;
+        }
 
-			if (a == 0)
-			{
-				//per
-				count++;
-				if (max < count)
-				{
-					max = count;
-				}
-				break;
-			}
-			else if (a < 0)
-			{
-				//fail
-				continue;
-			}
-			else
-			{
-				//0 < a
-				dfs(a, count + 1);
-			}
-		}
-	}
+
+        for (int i = n; 1 <= i; i--)
+        {
+            if (remain - (i * i) < 0)
+            {
+                continue;
+            }
+
+            bool result = dfs(i, count + 1, remain - (i * i));
+
+            if (result)
+            {
+                break;
+            }
+
+        }
+
+
+        return false;
+    }
+
 
 public:
-	int numSquares(int n) {
+    int numSquares(int n) {
 
-		if (1 == n || 2 == n || 3 == n)
-		{
-			return n;
-		}
+        dfs(n, 0, n);
 
-		dfs(n, 0);
+        return min;
 
-		return max;
-
-	}
+    }
 };
