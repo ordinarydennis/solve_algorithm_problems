@@ -1,25 +1,23 @@
 class Solution {
 public:
-	int countNumbersWithUniqueDigits(int n) {
+    int countNumbersWithUniqueDigits(int n) {
 
-		map<int, bool> dp;
+        if (n == 0)
+            return 1;
 
-		n = pow(10, n);
+        int res = 10;
 
-		for (int i = 0; i < n; i++)
-		{
-			auto it = dp.find(1);
+        int uniqueDigits = 9;
 
-			if (dp.end() == it)
-			{
-				dp.emplace(e, true);
-			}
+        int availableNumber = 9;
 
-			n = n / 10;
+        while (n-- > 1 && availableNumber > 0)
+        {
+            uniqueDigits = uniqueDigits * availableNumber;
+            res += uniqueDigits;
+            availableNumber--;
+        }
 
-		}
-
-		return dp.size();
-
-	}
+        return res;
+    }
 };
