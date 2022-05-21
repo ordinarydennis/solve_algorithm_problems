@@ -1,57 +1,65 @@
 class Solution {
-
-	std::vector<int> dp;
-
-	bool isEven(int n)
-	{
-		return 0 == (n % 2);
-	}
-
-	int dfs(int n)
-	{
-		if (1 == n)
-		{
-			return 0;
-		}
-
-		if (INT_MAX != dp[n])
-		{
-			return dp[n];
-		}
-
-		//even
-		if (isEven(n))
-		{
-			int retCount = dfs(n / 2) + 1;
-			dp[n] = std::min(dp[n], retCount);
-		}
-		//odd
-		else
-		{
-			for (int i = 0; i < 2; i++)
-			{
-				int n2 = (0 == i) ? n - 1 : n + 1;
-				int retCount = dfs(n2) + 1;
-				dp[n] = std::min(dp[n], retCount);
-			}
-		}
-
-		return dp[n];
-	}
-
+private:
+    unordered_map<int, int> visited;
 
 public:
-	int integerReplacement(int n) {
+    int integerReplacement(int n) {
 
-		if (1 == n)
-		{
-			return 0;
-		}
+        if (n == 1)
+            return 0;
 
-		dp.resize(n + 1, INT_MAX);
+        
+        if (visited.count(n) == 0)
+        {
+            if (n & 1 == 1)
+            {
+                visited[n] = 2 + min(
+                    integerReplacement(n / 2), 
+                    integerReplacement(n / 2 + 1)
+                );
+            }
+            else
+            {
+                visited[n] = 1 + integerReplacement(n / 2);
+            }
+        }
+        
+        return visited[n];
+    }
+};
 
-		dfs(n);
+class Solution {
+private:
+    unordered_map<int, int> visited;
 
-		return dp[n];
-	}
+    int dfs(int n)
+    {
+        if (visited.count(n) == 0)
+        {
+            if (n & 1 == 1)
+            {
+                visited[n] = 1 + min(
+                    dfs(n + 1),
+                    dfs(n - 1)
+                );
+            }
+            else
+            {
+                visited[n] = 1 + integerReplacement(n / 2);
+            }
+        }
+    }
+
+public:
+    int integerReplacement(int n) {
+
+        if (n == 1)
+            return 0;
+
+
+        dfs(n);
+
+
+        return visited[n];
+    }
 };
