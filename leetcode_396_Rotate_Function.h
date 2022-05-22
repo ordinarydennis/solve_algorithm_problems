@@ -1,31 +1,30 @@
 class Solution {
 public:
-	int maxRotateFunction(vector<int>& nums) {
+    int maxRotateFunction(vector<int>& nums) {
 
-		int size = nums.size();
+        int size = nums.size();
 
-		int max = INT_MIN;
+        if (1 == size)
+            return 0;
 
-		for (int s = 0; s < size; s++)
-		{
-			int sum = 0;
+        vector<int> dp(size, 0);
 
-			for (int i = 0; i < size; i++)
-			{
-				int index = s + i;
+        int sum = 0;
 
-				if (size <= index)
-				{
-					index = index - size;
-				}
+        for (int i = 0; i < size; i++)
+        {
+            sum += nums[i];
+            dp[0] += i * nums[i];
+        }
 
-				sum += (i) * nums[index];
-			}
+        int max = dp[0];
 
-			max = std::max(max, sum);
-		}
+        for (int i = 1; i < nums.size(); i++)
+        {
+            dp[i] = dp[i - 1] + sum - size * nums[size - i];
+            max = std::max(max, dp[i]);
+        }
 
-		return max;
-
-	}
+        return max;
+    }
 };
