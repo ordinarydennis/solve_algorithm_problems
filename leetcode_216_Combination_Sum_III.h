@@ -2,16 +2,14 @@ class Solution {
 
 	vector<vector<int>> ret;
 
-	bool dfs(int k, int n, int index, int sum, vector<int>& list)
+	void dfs(int k, int n, int index, int sum, vector<int>& list)
 	{
 		if (k == list.size())
 		{
 			if (sum == n)
 			{
 				ret.push_back(list);
-				return true;
 			}
-			return false;
 		}
 
 		for (int i = index; i < 10; i++)
@@ -24,17 +22,12 @@ class Solution {
 
 			list.push_back(i);
 
-			bool result = dfs(k, n, i + 1, sum + i, list);
+			dfs(k, n, i + 1, sum + i, list);
 
 			list.pop_back();
 
-			if (result)
-			{
-				break;
-			}
 		}
 
-		return false;
 	}
 
 
