@@ -5,39 +5,29 @@ class Solution {
 	void dfs(vector<int>& candidates, int target, int pos, int sum, vector<int>& list)
 	{
 
+		if (target == sum)
+		{
+			ret.push_back(list);
+			return;
+		}
+
+
 		for (int i = pos; i < candidates.size(); i++)
 		{
 			if (target < candidates[i])
-			{
-				break;
-			}
+				return;
 
 			if (target < sum + candidates[i])
-			{
-				break;
-			}
+				return;
+
+
+			if (pos < i && candidates[i] == candidates[i - 1])
+				continue;
+
 
 			list.push_back(candidates[i]);
 
-			if (target == sum + candidates[i])
-			{
-				bool isFound = false;
-				for (const auto& l : ret)
-				{
-					if (list == l)
-					{
-						isFound = true;
-						break;
-					}
-				}
-
-				if(false == isFound)
-					ret.push_back(list);
-			}
-			else
-			{
-				dfs(candidates, target, i + 1, sum + candidates[i], list);
-			}
+			dfs(candidates, target, i + 1, sum + candidates[i], list);
 
 			list.pop_back();
 
