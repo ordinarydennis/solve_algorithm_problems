@@ -1,21 +1,40 @@
 class Solution {
+private:
+	int sum;
+
 public:
 	bool canPartition(vector<int>& nums) {
 
-		std::sort(nums.begin(), nums.end());
+		sum = 0;
 
-		for (int i = 0; i < nums.size() - 1; i++)
+		for (int i = 0; i < nums.size(); ++i)
+			sum += nums[i];
+
+		if (sum % 2 == 1)
+			return false;
+
+		vector<bool>check(sum + 1, false);
+
+		check[0] = true;
+
+		int target = sum / 2;
+
+		for (int i = 0; i < nums.size(); ++i)
 		{
-			int subset1 = accumulate(nums.begin(), nums.end() - (1 + i), 0);
-			int subset2 = accumulate(nums.end() - (1 + i), nums.end(), 0);
+			//is element greater than target?
+			if (nums[i] > target)
+				return false;
 
-			if (subset1 == subset2)
+			for (int j = target; j >= nums[i]; --j)
 			{
-				return true;
+				check[j] = check[j] || check[j - nums[i]];
+
+				if (check[j] && j == target)
+				{
+					return true;
+				}
 			}
 		}
-
-		return false;
-
+		return check[target];
 	}
 };
