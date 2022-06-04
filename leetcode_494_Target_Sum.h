@@ -4,35 +4,18 @@ class Solution {
 
     void traversal(vector<int>& nums, int pos, int sum, int target)
     {
-        if (target == sum)
+        if (pos == nums.size())
         {
-            count++;
-            return;
-        }
-
-        if (target < sum)
-        {
-            return;
-        }
-
-        if (nums.size() <= pos)
-        {
-            return;
-        }
-
-        for (int i = 0; i < 2; i++)
-        {
-            int a = 1;
-
-            if (i == 1)
+            if (sum == target)
             {
-                a *= -1;
+                count++;
             }
-
-            int value = a * nums[pos] + sum;
-
-            traversal(nums, pos + 1, value, target);
+            return;
         }
+
+        traversal(nums, pos + 1, sum - nums[pos], target);
+        traversal(nums, pos + 1, sum + nums[pos], target);
+
     }
 
 public:
