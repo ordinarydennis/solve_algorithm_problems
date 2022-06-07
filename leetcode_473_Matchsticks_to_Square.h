@@ -1,40 +1,58 @@
 class Solution {
 
-	vector<bool> dp;
+	vector<int> sumList;
 
 	bool dfs(vector<int>& matchsticks, int pos, int sum, int targetSize)
 	{
-		for (int i = pos; i < matchsticks.size(); i++)
+		if (pos == matchsticks.size())
 		{
-			if (dp[i])
+			if (sumList[0] == targetSize && 
+				sumList[1] == targetSize && 
+				sumList[2] == targetSize)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (targetSize < sumList[i] + matchsticks[pos])
 			{
 				continue;
 			}
 
-			if (sum + matchsticks[i] == targetSize)
+			sumList[i] += matchsticks[pos];
+
+			if (dfs(matchsticks, pos + 1, sum + matchsticks[pos], targetSize))
 			{
-				dp[i] = true;
-				return;
+				return true;
 			}
 
-			if (dfs(matchsticks, i + 1, sum + matchsticks[i], targetSize))
-			{
-				dp[i] = true;
-			}
+			sumList[i] -= matchsticks[pos];
+
 		}
+
+		return false;
 	}
 
 
 public:
 	bool makesquare(vector<int>& matchsticks) {
 
-		dp.resize(matchsticks.size(), false);
-
 		int total = accumulate(matchsticks.begin(), matchsticks.end(), 0);
+
+		if (0 != total % 4)
+		{
+			return false;
+		}
 
 		int targetSize = total / 4;
 
 		sort(matchsticks.begin(), matchsticks.end());
+
+		sumList.resize(4, 0);
 
 		return dfs(matchsticks, 0, 0, targetSize);
 
