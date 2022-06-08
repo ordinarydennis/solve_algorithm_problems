@@ -6,8 +6,8 @@ class Solution {
 	{
 		if (pos == matchsticks.size())
 		{
-			if (sumList[0] == targetSize && 
-				sumList[1] == targetSize && 
+			if (sumList[0] == targetSize &&
+				sumList[1] == targetSize &&
 				sumList[2] == targetSize)
 			{
 				return true;
@@ -50,7 +50,13 @@ public:
 
 		int targetSize = total / 4;
 
-		sort(matchsticks.begin(), matchsticks.end());
+		sort(matchsticks.begin(), matchsticks.end(), std::greater<>());
+
+		if (targetSize < matchsticks[0])
+		{
+			return false;
+		}
+
 
 		sumList.resize(4, 0);
 
