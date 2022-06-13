@@ -3,26 +3,23 @@ class Solution {
 public:
     int longestPalindromeSubseq(string s) {
 
-        int count = 0;
+        int max = 0;
 
-        for (int a = 0; a < s.size() - 2; a++s)
+        for (int a = 0; a <= s.length() - 1; a++)
         {
-            for (int b = a + 1; b < s.size() - 1; b++)
+            int count = 0;
+
+            for (int b = a + 1; b <= s.length(); b++)
             {
                 if (s[a] == s[b])
                 {
-
+                    count++;
                 }
-
-
-
-
             }
+
+            max = std::max(max, count);
         }
 
-
-
-
-
+        return max + 1;
     }
 };
