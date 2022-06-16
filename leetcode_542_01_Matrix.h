@@ -1,83 +1,35 @@
 class Solution {
-
 public:
-	vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        int rows = matrix.size();
+        if (rows == 0)
+            return matrix;
+        int cols = matrix[0].size();
+        vector<vector<int>> dist(rows, vector<int>(cols, INT_MAX));
+        queue<pair<int, int>> q;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == 0) {
+                    dist[i][j] = 0;
+                    q.push({ i, j }); //Put all 0s in the queue.
+                }
+            }
+        }
 
-		vector<vector<int>> ret(mat.size(), vector<int>(mat[0].size(), 0));
-
-		for (int row = 0; row < mat.size(); row++)
-		{
-			for (int column = 0; column < mat[0].size(); column++)
-			{
-				if (0 == mat[row][column])
-				{
-					ret[row][column] = 0;
-					continue;
-				}
-
-				int nearest = INT_MAX;
-
-				//аб
-				if (0 < column)
-				{
-					if (0 == mat[row][column - 1])
-					{
-						ret[row][column] = 1;
-						continue;
-					}
-					else
-					{
-						nearest = std::min(nearest, mat[row][column - 1] + 1);
-					}
-				}
-
-				//ю╖
-				if (0 < row)
-				{
-					if (0 == mat[row - 1][column])
-					{
-						ret[row][column] = 1;
-						continue;
-					}
-					else
-					{
-						nearest = std::min(nearest, mat[row - 1][column] + 1);
-					}
-				}
-
-				//©Л
-				if (column < mat[0].size() - 1)
-				{
-					if (0 == mat[row][column + 1])
-					{
-						ret[row][column] = 1;
-						continue;
-					}
-					else
-					{
-						nearest = std::max(nearest, mat[row][column + 1] + 1);
-					}
-				}
-
-				//го
-				if (row < mat.size() - 1)
-				{
-					if (0 == mat[row + 1][column])
-					{
-						ret[row][column] = 1;
-						continue;
-					}
-					else
-					{
-						nearest = std::max(nearest, mat[row + 1][column] + 1);
-					}
-				}
-
-				ret[row][column] = nearest;
-			}
-		}
-
-		return ret;
-
-	}
+        int dir[4][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+        while (!q.empty()) {
+            pair<int, int> curr = q.front();
+            q.pop();
+            for (int i = 0; i < 4; i++) {
+                int new_r = curr.first + dir[i][0], new_c = curr.second + dir[i][1];
+                if (new_r >= 0 && new_c >= 0 && new_r < rows && new_c < cols) {
+                    if (dist[new_r][new_c] > dist[curr.first][curr.second] + 1) {
+                        dist[new_r][new_c] = dist[curr.first][curr.second] + 1;
+                        q.push({ new_r, new_c });
+                    }
+                }
+            }
+        }
+        return dist;
+    }
 };
