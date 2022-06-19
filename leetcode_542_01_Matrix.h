@@ -1,5 +1,15 @@
 
-//my solution
+/*
+My solution
+This problem is solved using dp.
+First, create a dp to store distance to 0.
+basically, if the value of the cell of the matrix is 0, fill the cell of the dp with 0.
+in the first loop, if the upper or left cells are 0, the value of the current cell of the dp must be 1, 
+otherwise, fill the current cell with a value that adds 1 to the smaller either the upper or the left cell.
+in the second loop, as the same way, if the lower or right cells are 0, the value of the current cell of the dp must be 1. 
+otherwise, fill the current cell with a value that adds 1 to the smaller either the lower or the right cell.
+*/
+
 class Solution {
 public:
 	vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
