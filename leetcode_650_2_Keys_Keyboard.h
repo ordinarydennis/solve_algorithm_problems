@@ -1,44 +1,30 @@
 class Solution {
-
-	int min = INT_MAX;
-
-
-	void dfs(int n, int countOfA, int countOfAOnBoad, int operationCount, bool isCopyAll)
-	{
-		if (n < countOfA)
-		{
-			return;
-		}
-
-		if (n <= countOfA)
-		{
-			min = std::min(min, operationCount);
-			return;
-		}
-		
-		if (isCopyAll)
-		{
-			//paste
-			dfs(n, countOfA + countOfAOnBoad, countOfAOnBoad, operationCount + 1, false);
-		}
-		else
-		{
-			//copy
-			dfs(n, countOfA, countOfA, operationCount + 1, true);
-
-			//paste
-			dfs(n, countOfA + countOfAOnBoad, countOfAOnBoad, operationCount + 1, false);
-		}
-	}
-
-
 public:
-	int minSteps(int n) {
+    int minSteps(int n) {
 
-		dfs(n, 1, 0, 0, false);
+        int ans = 0;
 
-		return min;
+        //when n is 2 or 3, the loop is not performed
+        for (int d = 2; d * d <= n; d++) {
 
+            //when copy & paste , no remaining number
+            //when d = 2, cp (aa)
+            //when d = 3, cpp (aaa)
+            //when d = 4, cppp (aaaa)
+            while (n % d == 0)
+            {
+                ans += d;
+                n /= d;
+            }
+        }
 
-	}
+        //when n is 10, 
+
+        if (n != 1)
+        {
+            ans += n;
+        }
+
+        return ans;
+    }
 };
