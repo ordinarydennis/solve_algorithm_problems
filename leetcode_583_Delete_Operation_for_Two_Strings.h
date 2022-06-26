@@ -1,54 +1,23 @@
 class Solution {
+
+    vector<vector<int> >dp;
+
 public:
-	int minDistance(string word1, string word2) {
+    int minDistance(string& word1, string& word2) {
 
+        dp.resize(size(word1) + 1, vector<int>(size(word2) + 1, 1000));
 
-		int word1Length = word1.size();
-		int word2Length = word2.size();
+        return solve(word1, word2, 0, 0);
 
-		int minLenght = std::min(word1Length, word2Length);
+    }
+    int solve(string& w1, string& w2, int i, int j) {
 
-		int min = INT_MIN;
+        if (i == size(w1) && j == size(w2)) return 0;
+        if (i == size(w1) || j == size(w2)) return max(size(w1) - i, size(w2) - j);
+        if (dp[i][j] != 1000) return dp[i][j];
+        if (w1[i] == w2[j]) return solve(w1, w2, i + 1, j + 1);
 
-		for (int a = 0; a < word1Length; a++)
-		{
-			for (int b = 0; b < word2Length; b++)
-			{
-				if (word1[a] == word2[b])
-				{
-					int num = 1;
+        return dp[i][j] = 1 + min(solve(w1, w2, i + 1, j), solve(w1, w2, i, j + 1));
 
-					for (int c = 1; c < minLenght; c++)
-					{
-
-						if (word1Length <= a + c)
-						{
-							break;
-						}
-
-						if (word2Length <= b + c)
-						{
-							break;
-						}
-
-
-						if (word1[a + c] == word2[b + c])
-						{
-							num++;
-						}
-					}
-
-					min = std::max(min, num);
-				}
-
-			}
-		}
-
-		if (INT_MIN == min)
-		{
-			return word1Length + word2Length;
-		}
-
-		return (word1Length - min) + (word2Length - min);
-	}
+    }
 };
