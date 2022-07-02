@@ -15,8 +15,6 @@ class Solution {
 
 	int traversal(TreeNode* node)
 	{
-
-
 		if (nullptr == node)
 		{
 			return 1;
@@ -27,12 +25,10 @@ class Solution {
 
 		if(1 < std::abs(left - right))
 		{
-
 			ret = false;
 		}
 
 		return std::max(left, right);
-
 	}
 
 
