@@ -1,70 +1,73 @@
-
-["1", "1", "0", "0", "0"], 
-["1", "1", "0", "0", "0"], 
-["0", "0", "1", "0", "0"], 
-["0", "0", "0", "1", "1"]
-
 class Solution {
 
-	int checkStartPointR = -1;
-	int checkStartPointC = -1;
+	int count = 0;
 
-	void findLand(vector<vector<char>>& grid, vector<vector<bool>>& landCheck, int r, int c, int& landCount)
+	int maxR = 0;
+	int maxC = 0;
+
+	void findLand(vector<vector<char>>& grid, int r, int c, vector<vector<bool>>& isLand)
 	{
-
-		if (grid.size() <= r || grid[0].size() <= c)
-		{
-			return;
-		}
-
-		if (r < 0 || c < 0)
-		{
-			return;
-		}
-
-		if (landCheck[r][c])
-		{
-			return;
-		}
-
 		if ('0' == grid[r][c])
 		{
 			return;
 		}
 
-		landCheck[r][c] = true;
-
-		if (-1 == checkStartPointR && -1 == checkStartPointC)
+		if (isLand[r][c])
 		{
-			checkStartPointR = r;
-			checkStartPointC = c;
+			return;
 		}
 
-		//주변 순회
-		findLand(grid, landCheck, r, c + 1, landCount);
-		findLand(grid, landCheck, r + 1, c, landCount);
-		findLand(grid, landCheck, r, c - 1, landCount);
-		findLand(grid, landCheck, r - 1, c, landCount);
+		isLand[r][c] = true;
 
-		if (r == checkStartPointR && c == checkStartPointC)
+		if (c + 1 < maxC)
 		{
-			landCount++;
-			checkStartPointC = checkStartPointR = -1;
+			findLand(grid, r, c + 1, isLand);
 		}
 
-		landCheck[r][c] = false;
+		if (r + 1 < maxR)
+		{
+			findLand(grid, r + 1, c, isLand);
+		}
+
+		if (0 <= c - 1)
+		{
+			findLand(grid, r, c - 1, isLand);
+		}
+
+		if (0 <= r - 1)
+		{
+			findLand(grid, r - 1, c, isLand);
+		}
 	}
 
 
 public:
 	int numIslands(vector<vector<char>>& grid) {
 
-		int landCount = 0;
+		maxR = static_cast<int>(grid.size());
+		maxC = static_cast<int>(grid[0].size());
 
-		vector<vector<bool>> landCheck(grid.size(), vector<bool>(grid[0].size(), false));
+		vector<vector<bool>> isLand(maxR, vector<bool>(maxC, false));
 
-		findLand(grid, landCheck, 0, 0, landCount);
+		for (int r = 0; r < maxR; r++)
+		{
+			for (int c = 0; c < maxC; c++)
+			{
+				if ('0' == grid[r][c])
+				{
+					continue;
+				}
 
-		return landCount;
+				if (isLand[r][c])
+				{
+					continue;
+				}
+
+				findLand(grid, r, c, isLand);
+
+				count++;
+			}
+		}
+		return count;
 	}
 };
