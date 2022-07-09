@@ -1,27 +1,38 @@
 class Solution {
 public:
-	bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+    bool validPath(int n, vector<vector<int>>& edges, int start, int end) {
+        
+        vector<vector<int>> graph(n);
+        
+        for (int i = 0; i < edges.size(); i++)
+        {
+            graph[edges[i][0]].push_back(edges[i][1]);
+            graph[edges[i][1]].push_back(edges[i][0]);
+        }
 
-		int nextIndex = source;
 
-		for (int a = 0; a < edges.size(); a++)
-		{
+        queue<int> q;
+        vector<int> visited(n, 0);
+        q.push(start);
+        visited[start] = 1;
 
-			if (destination == edges[a][1])
-			{
-				return true;
-			}
+        while (!q.empty())
+        {
+            int top = q.front();
 
-			for (int b = a + 1; b < edges.size(); b++)
-			{
+            q.pop();
 
-				if (edges[a][1] == edges[b][0])
-				{
-					a = b - 1;
-				}
-			}
-		}
+            if (top == end)
+                return true;
 
-		return false;
-	}
+            for (int i = 0; i < graph[top].size(); i++)
+            {
+                if (visited[graph[top][i]] == 0) {
+                    q.push(graph[top][i]);
+                    visited[graph[top][i]] = 1;
+                }
+            }
+        }
+        return false;
+    }
 };
