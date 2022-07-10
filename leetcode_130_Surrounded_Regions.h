@@ -1,83 +1,48 @@
-
 class Solution {
-
-	int maxR = 0;
-	int maxC = 0;
-
-	vector<vector<bool>> checkRegion;
-
-	int findRegion(vector<vector<char>>& board, int r, int c, vector<vector<int>>& regionList)
-	{
-
-		if (maxR <= r || r < 0)
-			return 1;
-
-		if (maxC <= c || c < 0)
-			return 1;
-
-
-		if ('X' == board[r][c])
-			return 0;
-
-		if (checkRegion[r][c])
-			return 0;
-
-
-		checkRegion[r][c] = true;
-
-		regionList.emplace_back(std::move(vector<int> {r, c}));
-
-		if (findRegion(board, r, c + 1, regionList))
-		{
-			return 1;
-		}
-		if (findRegion(board, r + 1, c, regionList))
-		{
-			return 1;
-		}
-		if (findRegion(board, r, c - 1, regionList))
-		{
-			return 1;
-		}
-		if (findRegion(board, r - 1, c, regionList))
-		{
-			return 1;
-		}
-		return 0;
-	}
-
-
 public:
-	void solve(vector<vector<char>>& board) {
+    void DFS(vector<vector<char>>& board, int i, int j, int m, int n) {
+        if (i < 0 or j < 0 or i >= m or j >= n or board[i][j] != 'O') return;
+        board[i][j] = '#';
+        DFS(board, i - 1, j, m, n);
+        DFS(board, i + 1, j, m, n);
+        DFS(board, i, j - 1, m, n);
+        DFS(board, i, j + 1, m, n);
+    }
 
-		maxR = static_cast<int>(board.size());
-		maxC = static_cast<int>(board[0].size());
+    void solve(vector<vector<char>>& board) {
 
-		checkRegion.resize(maxR);
+        int m = board.size();
 
-		for (auto& r : checkRegion)
-			r.resize(maxC);
+        if (m == 0) return;
 
-		for (int r = 0; r < maxR; r++)
-		{
-			for (int c = 0; c < maxC; c++)
-			{
-				if ('X' == board[r][c])
-					continue;
+        int n = board[0].size();
 
-				vector<vector<int>> regionList;
+        for (int i = 0; i < m; i++)
+        {
+            if (board[i][0] == 'O')
+                DFS(board, i, 0, m, n);
+            if (board[i][n - 1] == 'O')
+                DFS(board, i, n - 1, m, n);
+        }
 
-				int result = findRegion(board, r, c, regionList);
+        for (int j = 0; j < n; j++)
+        {
+            if (board[0][j] == 'O')
+                DFS(board, 0, j, m, n);
+            if (board[m - 1][j] == 'O')
+                DFS(board, m - 1, j, m, n);
+        }
 
-				if (0 == result)
-				{
-					for (const auto& region : regionList)
-					{
-						board[region[0]][region[1]] = 'X';
-					}
-				}
-			}
-		}
+        for (int i = 0; i < m; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (board[i][j] == 'O')
+                    board[i][j] = 'X';
+                if (board[i][j] == '#')
+                    board[i][j] = 'O';
+            }
+        }
 
-	}
+    }
 };
