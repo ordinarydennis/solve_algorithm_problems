@@ -2,55 +2,66 @@
 // Definition for a Node.
 class Node {
 public:
-	int val;
-	vector<Node*> neighbors;
-	Node() {
-		val = 0;
-		neighbors = vector<Node*>();
-	}
-	Node(int _val) {
-		val = _val;
-		neighbors = vector<Node*>();
-	}
-	Node(int _val, vector<Node*> _neighbors) {
-		val = _val;
-		neighbors = _neighbors;
-	}
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
 };
 */
 
 class Solution {
 
-	void traversalGraph(const Node* node, Node* dest, vector<bool>& check)
-	{
+    Node* traverse(Node* node, std::unordered_map<Node*, Node*>& checker)
+    {
+        Node* newNode = new Node(node->val);
 
-		for (const auto* neighbor : node->neighbors)
-		{
-			Node* newNode = new Node(neighbor->val);
+        checker.insert(
+            { node, newNode }
+        );
 
-			dest->neighbors.push_back(newNode);
+        for (Node* neighbor : node->neighbors)
+        {
+            const auto& it = checker.find(neighbor);
 
-			if (false == check[neighbor->val])
-			{
-				check[neighbor->val] = true;
-				traversalGraph(neighbor, newNode, check);
-			}
-		}
+            Node* node = nullptr;
 
-	}
+            if (checker.end() != it)
+            {
+                node = it->second;
+            }
+            else
+            {
+                node = traverse(neighbor, checker);
+            }
+
+            newNode->neighbors.push_back(node);
+
+        }
+
+        return newNode;
+    }
 
 public:
-	Node* cloneGraph(Node* node) {
+    Node* cloneGraph(Node* node) {
 
-		vector<bool> check(101, false);
+        if (nullptr == node)
+        {
+            return nullptr;
+        }
 
-		Node* dest = new Node(node->val);
+        std::unordered_map<Node*, Node*> checker;
 
-		check[node->val] = true;
+        return traverse(node, checker);
 
-		traversalGraph(node, dest, check);
-
-		return dest;
-
-	}
+    }
 };
