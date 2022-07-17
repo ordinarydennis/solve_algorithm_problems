@@ -72,32 +72,25 @@ public:
 
 		std::unordered_map<const Node*, Node*> m;
 
+		m[node] = new Node(node->val);
+
 		while (false == q.empty())
 		{
 			const Node* e = q.front();
+
 			q.pop();
-
-			Node* n = new Node(e->val);
-
-			m.emplace(e, n);
 
 			for (const Node* neighbor : e->neighbors)
 			{
 				const auto& it = m.find(neighbor);
 
-				Node* newNeighbor = nullptr;
-
 				if (m.end() == it)
 				{
-					newNeighbor = new Node(e->val);
+					m[neighbor] = new Node(neighbor->val);
 					q.push(neighbor);
 				}
-				else
-				{
-					newNeighbor = it->second;
-				}
 
-				n->neighbors.push_back(newNeighbor);
+				m[e]->neighbors.push_back(m[neighbor]);
 			}
 
 		}
