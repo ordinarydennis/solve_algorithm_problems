@@ -2,11 +2,6 @@ class Solution {
 
 	bool findRoom(vector<vector<int>>& rooms, int roomIndex, int visitCount, std::unordered_map<int, bool>& checker)
 	{
-		if (rooms.size() == visitCount)
-		{
-			return true;
-		}
-
 		auto it = checker.find(roomIndex);
 
 		if (checker.end() != it)
@@ -15,6 +10,11 @@ class Solution {
 		}
 
 		checker.emplace(roomIndex, true);
+
+		if (rooms.size() == checker.size())
+		{
+			return true;
+		}
 
 		const auto& keyList = rooms[roomIndex];
 
@@ -35,13 +35,7 @@ public:
 
 		std::unordered_map<int, bool> checker;
 
-		checker.emplace(0, true);
-
 		return findRoom(rooms, 0, 1, checker);
 
 	}
 };
-
-
-
-[[1, 3], [3, 0, 1], [2], [0]]
