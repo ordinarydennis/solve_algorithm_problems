@@ -1,37 +1,32 @@
 class Solution {
 
-	void dfs(int index, vector<int>& ret, int type, std::map<int, vector<int>>& pathMap)
-	{
-		if (ret[index])
-		{
-			return;
-		}
-
-		for (const int [i, paths] : pathMap)
-		{
-			dfs(i, ret, type + 1, pathMap);
-		}
-	}
-
 public:
-	vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+	vector<int> gardenNoAdj(int N, vector<vector<int>>& paths) {
 
-		vector<int> ret(n, 0);
+		vector<int> res(N);
 
-		std::map<int, vector<int>> pathMap;
+		vector<vector<int>> g(N);
 
-		for (const auto& path : paths)
+		for (auto p : paths)
 		{
-			pathMap[path[0]].push_back(path[1]);
+			g[p[0] - 1].push_back(p[1] - 1);
+			g[p[1] - 1].push_back(p[0] - 1);
 		}
 
-		int type = 0;
-
-		for (const int[i, paths] : pathMap)
+		for (auto i = 0; i < N; ++i)
 		{
-			dfs(i, ret, type + 1, pathMap);
+			bool used[5] = {};
+
+			for (auto j : g[i]) 
+				used[res[j]] = true;
+
+			for (auto fl = 1; fl <= 4; ++fl)
+			{
+				if (!used[fl]) 
+					res[i] = fl;
+			}
 		}
 
-		return ret;
+		return res;
 	}
 };
