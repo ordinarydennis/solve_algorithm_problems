@@ -17,21 +17,24 @@ class Solution {
 	{
 		if (nullptr == node)
 		{
-			return 1;
+			return 0;
 		}
 
-		int left = traversal(node->left) + 1;
-		int right = traversal(node->right) + 1;
+		if (false == ret)
+		{
+			return 0;
+		}
 
-		if(1 < std::abs(left - right))
+		int left = traversal(node->left);
+		int right = traversal(node->right);
+
+		if (1 < std::abs(left - right))
 		{
 			ret = false;
 		}
 
-		return std::max(left, right);
+		return std::max(left, right) + 1;
 	}
-
-
 
 public:
 	bool isBalanced(TreeNode* root) {
