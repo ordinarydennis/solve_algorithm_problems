@@ -12,25 +12,30 @@
 
 //Research about height-balanced binary search tree is required
 class Solution {
-    TreeNode* sortedArrayToBST(vector<int>& nums, int start, int end) {
 
-        if (end <= start)
-            return NULL;
+	TreeNode* generateBST(int start, int end, const vector<int>& nums)
+	{
+		if (end < start)
+		{
+			return nullptr;
+		}
 
-        int midIdx = (end + start) / 2;
+		int middleIndex = (start + end) / 2;
 
-        TreeNode* root = new TreeNode(nums[midIdx]);
+		int val = nums[middleIndex];
 
-        root->left = sortedArrayToBST(nums, start, midIdx);
-        root->right = sortedArrayToBST(nums, midIdx + 1, end);
+		TreeNode* root = new TreeNode(val);
 
-        return root;
+		root->left = generateBST(start, middleIndex - 1, nums);
+		root->right = generateBST(middleIndex + 1, end, nums);
 
-    }
+		return root;
+	}
+
 public:
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
+	TreeNode* sortedArrayToBST(vector<int>& nums) {
 
-        return sortedArrayToBST(nums, 0, nums.size());
+		return generateBST(0, nums.size() - 1, nums);
 
-    }
+	}
 };
