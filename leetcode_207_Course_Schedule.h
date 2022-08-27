@@ -1,41 +1,39 @@
 class Solution {
 public:
-	bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    bool iscycle(vector<int> adj[], vector<int>& vis, int id) {
 
-		std::map<int, vector<int>> chk;
+        if (vis[id] == 1)
+            return true;
+        
+        if (vis[id] == 0)
+        {
+            vis[id] = 1;
 
-		for (const auto& preReq : prerequisites)
-		{
-			chk[preReq[0]].push_back(preReq[1]);
-		}
+            for (auto edge : adj[id])
+            {
+                if (iscycle(adj, vis, edge))
+                    return true;
+            }
+        }
 
-		for (const auto& preReq : prerequisites)
-		{
-			const auto& it = chk.find(preReq[0]);
+        vis[id] = 2;
+        return false;
+    }
+    bool canFinish(int n, vector<vector<int>>& pre) {
 
-			const auto& preReqList = it->second;
+        vector<int> adj[n];
 
-			for (const int req : preReqList)
-			{
-				const auto& it2 = chk.find(req);
+        for (auto edge : pre)
+            adj[edge[1]].push_back(edge[0]);
 
-				if (it2 == chk.end())
-				{
-					continue;
-				}
+        vector<int> vis(n, 0);
 
-				const auto& preReqList2 = it2->second;
+        for (int i = 0; i < n; i++)
+        {
+            if (iscycle(adj, vis, i))
+                return false;
+        }
 
-				auto findIt = std::find(preReqList2.begin(), preReqList2.end(), preReq[0]);
-
-				if (preReqList2.end() != findIt)
-				{
-					return false;
-				}
-			}
-		}
-
-		return true;
-
-	}
+        return true;
+    }
 };
