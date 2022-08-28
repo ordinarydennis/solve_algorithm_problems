@@ -1,60 +1,69 @@
 class Solution {
 
-	bool dfs(int start, int dest, const std::unordered_map<int, vector<int>>& preReqMat, std::set<int>& chk)
-	{
-		if (chk.count(start))
-		{
-			return false;
-		}
+    vector<vector<int>>dp;
 
-		chk.insert(start);
+    bool dfs(int start, int end, const std::unordered_map<int, std::vector<int>>& mat)
+    {
+        if (dp[start][end] != -1)
+        {
+            return dp[start][end];
+        }
+        
+        const auto it = mat.find(start);
 
-		const auto& it = preReqMat.find(start);
+        if (mat.end() == it)
+        {
+            return dp[start][end] = 0;
+            return false;
+        }
 
-		if (preReqMat.end() == it)
-		{
-			return false;
-		}
+        const auto& list = it->second;
 
-		const vector<int>& list = it->second;
+        for (const auto& n : list)
+        {
+            if (n == end)
+            {
+                dp[start][end] = 1;
+                return true;
+            }
 
-		for (int d : list)
-		{
-			if (d == dest)
-			{
-				return true;
-			}
+            bool find = dfs(n, end, mat);
 
-			bool find = dfs(d, dest, preReqMat, chk);
+            if (find)
+            {
+                dp[start][end] = 1;
+                return find;
+            }
+        }
 
-			if (find)
-			{
-				return true;
-			}
-		}
+        return dp[start][end] = 0;
+        return false;
+    }
 
-		return false;
-	}
 
 public:
-	vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
 
-		vector<bool> ret;
-		std::unordered_map<int, vector<int>> preReqMat;
+        vector<bool> ret;
 
-		for (const auto& preReq : prerequisites)
-		{
-			preReqMat[preReq[0]].push_back(preReq[1]);
-		}
+        std::unordered_map<int, std::vector<int>> mat;
 
-		for (const auto& q : queries)
-		{
-			std:set<int> chk;
-			bool find = dfs(q[0], q[1], preReqMat, chk);
-			ret.push_back(find);
-		}
+        dp.resize(numCourses, vector<int>(numCourses, -1));
 
-		return ret;
+        for (const auto& preReq : prerequisites)
+        {
+            mat[preReq[1]].push_back(preReq[0]);
+            dp[preReq[1]][preReq[0]] = 1;
+        }
 
-	}
+        for (const auto& q : queries)
+        {
+            int end = q[0];
+            int start = q[1];
+
+            ret.push_back(dfs(start, end, mat));
+        }
+
+        return ret;
+    }
 };
