@@ -2,51 +2,46 @@ class Solution {
 public:
 	bool wordPattern(string pattern, string s) {
 
-		std::unordered_map<string, char> chk;
-		std::unordered_set<char> chk2;
+		unordered_map<char, string> m1;
+		unordered_map<string, char> m2;
 
 		string w;
 
 		int pIndex = 0;
-
+		
 		for (int i = 0; i <= s.size(); i++)
 		{
-			if (' ' == s[i] || s.size() == i)
+			if (' ' == s[i] || i == s.size())
 			{
-				auto it = chk.find(w);
+				auto it1 = m1.find(pattern[pIndex]);
+				auto it2 = m2.find(w);
 
-				if (chk.end() == it)
+				if (it1 == m1.end() && it2 == m2.end())
 				{
-					if (chk2.count(pattern[pIndex]))
+					m1.emplace(pattern[pIndex], w);
+					m2.emplace(w, pattern[pIndex]);
+				}
+				else if (it1 != m1.end() && it2 != m2.end())
+				{
+					if (it1->first != it2->second)
 					{
 						return false;
 					}
-
-					chk.emplace(std::move(w), pattern[pIndex]);
-					chk2.insert(pattern[pIndex]);
-					pIndex++;
 				}
 				else
 				{
-					if (pattern[pIndex] != it->second)
-					{
-						return false;
-					}
-					else
-					{
-						pIndex++;
-						w = "";
-					}
+					return false;
 				}
+				w = "";
+				pIndex++;
 			}
 			else
 			{
 				w += s[i];
 			}
-
 		}
 
-		return chk.size() == chk2.size();
+		return pattern.size() == (pIndex);
 
 	}
 };

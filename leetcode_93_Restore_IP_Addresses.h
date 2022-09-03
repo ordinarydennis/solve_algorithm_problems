@@ -1,43 +1,41 @@
 class Solution {
-
-	int strSize = 0;
-
-	vector<string> ret;
-
-	void dfs(int startIndex, int dotCount, std::string& str, const std::string& originS)
-	{
-		if (3 < dotCount)
-		{
-			return;
-		}
-
-		for (int i = 1; i <= 3; i++)
-		{
-			str.push_back(originS.substr(0, i + 1));
-
-			if (3 == dotCount && strSize == (str.size() - dotCount))
-			{
-				ret.push_back(str);
-				return;
-			}
-
-			str.push_back('.');
-
-			dfs(i + 1, dotCount + 1, str);
-
-			str.pop_back();
-		}
-
-	}
-
-
 public:
-	vector<string> restoreIpAddresses(string s) {
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> result;
+        string ip;
+        dfs(s, 0, 0, ip, result); //paras:string s,start index of s,step(from0-3),intermediate ip,final result
+        return result;
+    }
+    void dfs(string s, int start, int step, string ip, vector<string>& result) {
 
-		strSize = s.size();
+        if (start == s.size() && step == 4)
+        {
+            ip.erase(ip.end() - 1); //remove the last '.' from the last decimal number
+            result.push_back(ip);
+            return;
+        }
 
-		dfs(0, 0, str, s);
+        if (s.size() - start > (4 - step) * 3)
+            return;
 
-		return ret;
-	}
+        if (s.size() - start < (4 - step))
+            return;
+
+        int num = 0;
+
+        for (int i = start; i < start + 3; i++)
+        {
+            if (s.size() <= i)
+            {
+                break;
+            }
+
+            num = num * 10 + (s[i] - '0');
+            if (num <= 255) {
+                ip += s[i];
+                dfs(s, i + 1, step + 1, ip + '.', result);
+            }
+            if (num == 0) break;
+        }
+    }
 };
