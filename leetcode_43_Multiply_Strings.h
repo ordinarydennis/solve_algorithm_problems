@@ -1,52 +1,88 @@
 class Solution {
+private:
+    // Calculate the sum of all of the results from multiplyOneDigit.
+    string sumResults(vector<vector<int>>& results) {
+        // Initialize answer as a number from results.
+        vector<int> answer = results.back();
+        vector<int> newAnswer;
+        results.pop_back();
 
-	int getStrToNum(const string& strNum)
-	{
-		int realNum = 0;
+        // Sum each digit from answer and result
+        for (vector<int> result : results) {
+            newAnswer.clear();
+            int carry = 0;
 
-		for (int i = 0; i < strNum.size(); i++)
-		{
-			int index = strNum.size() - i - 1;
+            for (int i = 0; i < answer.size() || i < result.size(); ++i) {
+                // If answer is shorter than result or vice versa, use 0 as the current digit.
+                int digit1 = i < result.size() ? result[i] : 0;
+                int digit2 = i < answer.size() ? answer[i] : 0;
+                // Add current digits of both numbers.
+                int sum = digit1 + digit2 + carry;
+                // Set carry equal to the tens place digit of sum.
+                carry = sum / 10;
+                // Append the ones place digit of sum to answer.
+                newAnswer.push_back(sum % 10);
+            }
 
-			int num = strNum[index] - '0';
+            if (carry) {
+                newAnswer.push_back(carry);
+            }
+            answer = newAnswer;
+        }
 
-			int m = 1;
+        // Convert answer to a string.
+        string finalAnswer;
+        for (int digit : answer) {
+            finalAnswer.push_back(digit + '0');
+        }
+        return finalAnswer;
+    }
 
-			for (int a = 0; a < i; a++)
-			{
-				m *= 10;
-			}
+    // Multiply the current digit of secondNumber with firstNumber.
+    vector<int> multiplyOneDigit(string& firstNumber, char& secondNumberDigit, int numZeros) {
+        // Insert zeros at the beginning based on the current digit's place.
+        vector<int> currentResult(numZeros, 0);
+        int carry = 0;
 
-			realNum += (num * m);
-		}
+        // Multiply firstNumber with the current digit of secondNumber.
+        for (char firstNumberDigit : firstNumber) {
+            int multiplication = (secondNumberDigit - '0') * (firstNumberDigit - '0') + carry;
+            // Set carry equal to the tens place digit of multiplication.
+            carry = multiplication / 10;
+            // Append last digit to the current result.
+            currentResult.push_back(multiplication % 10);
+        }
 
-		return realNum;
-	}
-
+        if (carry) {
+            currentResult.push_back(carry);
+        }
+        return currentResult;
+    }
 
 public:
-	string multiply(string num1, string num2) {
+    string multiply(string firstNumber, string secondNumber) {
 
-		int realNum1 = getStrToNum(num1);
-		int realNum2 = getStrToNum(num2);
+        if (firstNumber == "0" || secondNumber == "0") {
+            return "0";
+        }
 
-		int mul = realNum1 * realNum2;
+        // Reverse both numbers.
+        reverse(firstNumber.begin(), firstNumber.end());
+        reverse(secondNumber.begin(), secondNumber.end());
 
-		string ret;
+        // For each digit in secondNumber, multipy the digit by firstNumber and
+        // store the multiplication result (reversed) in results.
+        vector<vector<int>> results;
 
-		do
-		{
-			int num = mul % 10;
+        for (int i = 0; i < secondNumber.size(); ++i) {
+            results.push_back(multiplyOneDigit(firstNumber, secondNumber[i], i));
+        }
 
-			ret += '0' + num;
+        // Add all the results in the results array, and store the sum in the answer string.
+        string answer = sumResults(results);
 
-			mul /= 10;
-
-		} while (mul);
-
-		std::reverse(ret.begin(), ret.end());
-
-		return ret;
-
-	}
+        // answer is reversed, so reverse it to get the final answer.
+        reverse(answer.begin(), answer.end());
+        return answer;
+    }
 };
