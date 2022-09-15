@@ -10,7 +10,6 @@ class Solution {
 		return false;
 	}
 
-
 public:
 	bool detectCapitalUse(string word) {
 
@@ -32,9 +31,9 @@ public:
 		if (1 == capCount && isCapitals(word[0]))
 		{
 			return true;
-			
-			
 		}
+
+		return false;
 
 	}
 };
