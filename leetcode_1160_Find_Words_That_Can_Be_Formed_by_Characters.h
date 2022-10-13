@@ -57,31 +57,3 @@ public:
 		return ret;
 	}
 };
-
-
-["cat", "bt", "hat", "tree"]
-"atach"
-
-a 2
-t 1
-c 1
-h 1
-
-cat
-
-["dyiclysmffuhibgfvapygkorkqllqlvokosagyelotobicwcmebnpznjbirzrzsrtzjxhsfpiwyfhzyonmuabtlwin", 
-"ndqeyhhcquplmznwslewjzuyfgklssvkqxmqjpwhrshycmvrb", 
-"ulrrbpspyudncdlbkxkrqpivfftrggemkpyjl", 
-"boygirdlggnh", 
-"xmqohbyqwagkjzpyawsydmdaattthmuvjbzwpyopyafphx", 
-"nulvimegcsiwvhwuiyednoxpugfeimnnyeoczuzxgxbqjvegcxeqnjbwnbvowastqhojepisusvsidhqmszbrnynkyop", 
-"hiefuovybkpgzygprmndrkyspoiyapdwkxebgsmodhzpx", 
-"juldqdzeskpffaoqcyyxiqqowsalqumddcufhouhrskozhlmobiwzxnhdkidr", 
-"lnnvsdcrvzfmrvurucrzlfyigcycffpiuoo", "oxgaskztzroxuntiwlfyufddl", 
-"tfspedteabxatkaypitjfkhkkigdwdkctqbczcugripkgcyfezpuklfqfcsccboarbfbjfrkxp", "qnagrpfzlyrouolqquytwnwnsqnmuzphne", "eeilfdaookieawrrbvtnqfzcricvhpiv", 
-"sisvsjzyrbdsjcwwygdnxcjhzhsxhpceqz", "yhouqhjevqxtecomahbwoptzlkyvjexhzcbccusbjjdgcfzlkoqwiwue", 
-"hwxxighzvceaplsycajkhynkhzkwkouszwaiuzqcleyflqrxgjsvlegvupzqijbornbfwpefhxekgpuvgiyeudhncv", "cpwcjwgbcquirnsazumgjjcltitmeyfaudbnbqhflvecjsupjmgwfbjo",
-"teyygdmmyadppuopvqdodaczob", "qaeowuwqsqffvibrtxnjnzvzuuonrkwpysyxvkijemmpdmtnqxwekbpfzs", 
-"qqxpxpmemkldghbmbyxpkwgkaykaerhmwwjonrhcsubchs"]
-
-"usdruypficfbpfbivlrhutcgvyjenlxzeovdyjtgvvfdjzcmikjraspdfp"
