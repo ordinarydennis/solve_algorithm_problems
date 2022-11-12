@@ -14,7 +14,7 @@ public:
                 if ('?' == time[i + 1])
                 {
                     time[i] = '2';
-                    time[i + 1] = '4';
+                    time[i + 1] = '3';
                     i++;
                 }
                 else if ('4' <= time[i + 1])
