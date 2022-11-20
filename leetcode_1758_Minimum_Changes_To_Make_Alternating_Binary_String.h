@@ -2,26 +2,33 @@ class Solution {
 public:
 	int minOperations(string s) {
 
-		if (1 == s.size())
+		int num0 = 0;
+		int num1 = 1;
+
+		int count0 = 0;
+		int count1 = 0;
+
+		for (char c : s)
 		{
-			return 0;
-		}
+			int n = c - '0';
 
-		char pre = s[0];
-
-		int ret = 0;
-
-		for (int i = 1; i < s.size(); i++)
-		{
-			if (pre == s[i])
+			//if it starts with zero
+			if (num0 == n)
 			{
-				s[i] = ('0' == pre) ? '1' : '0';
-				ret++;
+				count0++;
 			}
-			pre = s[i];
+
+			//if it starts with one
+			if (num1 == n)
+			{
+				count1++;
+			}
+
+			std::swap(num0, num1);
 		}
 
-		return ret;
+		return std::min(count0, count1);
 
 	}
 };
+
