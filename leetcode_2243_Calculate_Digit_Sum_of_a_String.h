@@ -1,6 +1,6 @@
 class Solution {
 
-	string stringToInt(string s)
+	string stringToInt(string&& s)
 	{
 		int ret = 0;
 
@@ -25,14 +25,13 @@ public:
 
 			for (int i = 0; i < str.size();)
 			{
-				sumStr += stringToInt(str.substr(i, k));
+				sumStr += stringToInt(std::move(str.substr(i, k)));
 				i += k;
 			}
 
-			str = sumStr;
+			str = std::move(sumStr);
 		}
 
 		return str;
-
 	}
 };
